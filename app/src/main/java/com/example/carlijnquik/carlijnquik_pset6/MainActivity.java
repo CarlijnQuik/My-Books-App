@@ -77,12 +77,12 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which){
                         case DialogInterface.BUTTON_POSITIVE:
-                            //Yes button clicked
+                            //Yes button_custom clicked
                             forward();
                             break;
 
                         case DialogInterface.BUTTON_NEGATIVE:
-                            //No button clicked
+                            //No button_custom clicked
                             name_input.setText("");
                             break;
                     }

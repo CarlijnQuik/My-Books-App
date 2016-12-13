@@ -4,21 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import static com.example.carlijnquik.carlijnquik_pset6.R.id.ivBookCover;
 
 public class BookDetailActivity extends AppCompatActivity {
 
@@ -31,6 +35,10 @@ public class BookDetailActivity extends AppCompatActivity {
     String id;
     String title;
     String author;
+    ImageView books;
+    ImageView add;
+    FirebaseDatabase database;
+    DatabaseReference dataRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +51,8 @@ public class BookDetailActivity extends AppCompatActivity {
         TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
         TextView tvAuthor = (TextView) findViewById(R.id.tvAuthor);
         ivBookCover = (ImageView) findViewById(R.id.ivBookCover);
+        books = (ImageView) findViewById(R.id.ibBooksActivity);
+        add = (ImageView) findViewById(R.id.ibAdd);
         not_available = "Info not available";
 
         Bundle extras = getIntent().getExtras();
@@ -52,12 +62,33 @@ public class BookDetailActivity extends AppCompatActivity {
         author = extras.getString("author", "");
         tvAuthor.setText(author);
 
+        database = FirebaseDatabase.getInstance();
+        dataRef = database.getReference();
+
         String request_details = "http://openlibrary.org/" + "books/" + id + ".json";
-        Log.d("viewlink1", request_details);
         RetrieveDetails retrieveDetails = new RetrieveDetails(this);
         retrieveDetails.execute(request_details);
 
         Picasso.with(this).load(Uri.parse("http://covers.openlibrary.org/b/olid/" + id + "-L.jpg?default=false")).error(R.drawable.nocover).into(ivBookCover);
+
+        books.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent go_to_books = new Intent(BookDetailActivity.this, BooksActivity.class);
+                startActivity(go_to_books);
+            }
+        });
+
+    }
+
+    public void onAdd(View view) {
+        Book book = new Book();
+        book.id = id;
+        book.title = title;
+        book.author = author;
+        dataRef.child("Books").push().setValue(book);
+        Toast toast = Toast.makeText(this, "Book added to list!", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     class RetrieveDetails extends AsyncTask<String, Void, String> {

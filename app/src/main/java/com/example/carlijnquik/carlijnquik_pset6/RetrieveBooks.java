@@ -29,6 +29,7 @@ public class RetrieveBooks extends AsyncTask<String, Void, String>{
     SearchActivity activity;
     Context context;
     ArrayList<Book> books;
+    String number_found;
 
     public RetrieveBooks(SearchActivity activity){
         this.activity = activity;
@@ -52,17 +53,18 @@ public class RetrieveBooks extends AsyncTask<String, Void, String>{
                 // load data from JSONObject to ArrayList
                 JSONObject data = new JSONObject(result);
                 JSONArray docs = data.getJSONArray("docs");
-                for (int i = 0; i < 25; i++) {
+                for (int i = 0; i < docs.length(); i++) {
                     JSONObject bookJSON = docs.getJSONObject(i);
                     Book book = Book.fromJson(bookJSON);
                     if(book != null) {
                         books.add(book);
                     }
                 }
+                number_found = data.getString("num_found");
             } catch(JSONException e) {
                 e.printStackTrace();
             }
-            activity.show_list(books);
+            activity.show_list(books, number_found);
         }
     }
 
