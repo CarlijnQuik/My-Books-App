@@ -33,10 +33,6 @@ public class Book implements Serializable {
         return this.author;
     }
 
-    public String getFirebasekey(){
-        return this.firebasekey;
-    }
-
     public String getCoverUrl() {
         return "http://covers.openlibrary.org/b/olid/" + id + "-M.jpg?default=false";
     }

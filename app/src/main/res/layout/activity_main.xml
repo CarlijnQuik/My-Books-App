@@ -22,17 +22,86 @@
         android:gravity="center"
         android:text="Welcome to the MyBooks App!"
         android:elevation="5dp"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:id="@+id/textView" />
+
+    <TextView
+        android:text="Which of these books do you like most?"
+        android:id="@+id/question_book"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="19sp"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/name_input"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="39dp" />
+
+    <TextView
+        android:text="Pick a username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="19sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/question_name"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="36dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="Name"
+        android:hint="Username"
         android:ems="10"
         android:id="@+id/name_input"
-        android:layout_marginTop="62dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="43dp"
+        android:layout_alignTop="@+id/question_name"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/question_book"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RadioButton
+            android:text="Harry Potter and the prisoner of Azkaban"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/potter"
+            android:textSize="15sp"
+            android:onClick="onRadioButtonClicked"
+            android:layout_below="@+id/name_input"
+            android:layout_alignLeft="@+id/name_input"
+            android:layout_alignStart="@+id/name_input"
+            android:layout_marginTop="22dp" />
+
+        <RadioButton
+            android:text="The Autobiography of Benjamin Franklin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/benjamin"
+            android:textSize="15sp"
+            android:onClick="onRadioButtonClicked"
+            android:layout_below="@+id/female"
+            android:layout_alignLeft="@+id/female"
+            android:layout_alignStart="@+id/female" />
+
+        <RadioButton
+            android:text="The Teeth of the Tiger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:id="@+id/tiger"
+            android:onClick="onRadioButtonClicked"
+            android:layout_below="@+id/other"
+            android:layout_alignLeft="@+id/other"
+            android:layout_alignStart="@+id/other" />
+    </RadioGroup>
 
     <ImageButton
         android:layout_width="100dp"
@@ -41,47 +110,9 @@
         android:scaleType="fitCenter"
         android:id="@+id/go"
         android:onClick="Go"
-        android:layout_below="@+id/name_input"
-        android:layout_alignRight="@+id/name_input"
-        android:layout_alignEnd="@+id/name_input" />
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/name_input"
-        android:layout_alignLeft="@+id/name_input"
-        android:layout_alignStart="@+id/name_input">
-
-        <RadioButton
-            android:text="Male"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/male"
-            android:onClick="onRadioButtonClicked"
-            android:layout_below="@+id/name_input"
-            android:layout_alignLeft="@+id/name_input"
-            android:layout_alignStart="@+id/name_input"
-            android:layout_marginTop="22dp" />
-
-        <RadioButton
-            android:text="Female"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/female"
-            android:onClick="onRadioButtonClicked"
-            android:layout_below="@+id/female"
-            android:layout_alignLeft="@+id/female"
-            android:layout_alignStart="@+id/female" />
-
-        <RadioButton
-            android:text="Other"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/other"
-            android:onClick="onRadioButtonClicked"
-            android:layout_below="@+id/other"
-            android:layout_alignLeft="@+id/other"
-            android:layout_alignStart="@+id/other" />
-    </RadioGroup>
+        android:layout_marginBottom="11dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView" />
 
 </RelativeLayout>

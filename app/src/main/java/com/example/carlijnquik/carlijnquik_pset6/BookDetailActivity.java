@@ -2,6 +2,7 @@ package com.example.carlijnquik.carlijnquik_pset6;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class BookDetailActivity extends AppCompatActivity {
     ImageView add;
     FirebaseDatabase database;
     DatabaseReference dataRef;
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,8 @@ public class BookDetailActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         dataRef = database.getReference();
+        SharedPreferences prefs = this.getSharedPreferences("user", this.MODE_PRIVATE);
+        name = prefs.getString("name", "");
 
         String request_details = "http://openlibrary.org/" + "books/" + id + ".json";
         RetrieveDetails retrieveDetails = new RetrieveDetails(this);
@@ -87,7 +91,7 @@ public class BookDetailActivity extends AppCompatActivity {
         book.title = title;
         book.author = author;
         book.firebasekey = dataRef.child("Books").push().getKey();
-        dataRef.child("Books").child(book.firebasekey).setValue(book);
+        dataRef.child("Users").child(name).child("Books").child(book.firebasekey).setValue(book);
         Toast toast = Toast.makeText(this, "Book added to list!", Toast.LENGTH_SHORT);
         toast.show();
     }

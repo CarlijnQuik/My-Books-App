@@ -31,6 +31,7 @@ public class BooksActivity extends AppCompatActivity {
     private DatabaseReference dataRef;
     ListView myBooks;
     ArrayList<Book> books;
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +42,14 @@ public class BooksActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         dataRef = database.getReference();
+        SharedPreferences prefs = this.getSharedPreferences("user", this.MODE_PRIVATE);
+        name = prefs.getString("name", "");
 
         myBooks = (ListView) findViewById(R.id.my_books);
         final BookAdapter bookAdapter = new BookAdapter(this, books);
         myBooks.setAdapter(bookAdapter);
-        // get user data
-        SharedPreferences prefs = this.getSharedPreferences("settings", this.MODE_PRIVATE);
-        String name = prefs.getString("name", "");
-        String gender = prefs.getString("gender", "");
 
-        // create database
-        String databaseName = name + gender;
-
-        Query myBooksQuery = dataRef.child("Books").orderByKey();
+        Query myBooksQuery = dataRef.child("Users").child(name).child("Books").orderByKey();
 
         myBooksQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -102,7 +98,7 @@ public class BooksActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Book this_book = (Book) parent.getAdapter().getItem(position);
-                dataRef.child("Books").child(this_book.firebasekey).removeValue();
+                dataRef.child("Users").child(name).child("Books").child(this_book.firebasekey).removeValue();
                 books.remove(this_book);
                 bookAdapter.notifyDataSetChanged();
                 return true;

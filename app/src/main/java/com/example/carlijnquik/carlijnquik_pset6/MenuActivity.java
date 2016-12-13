@@ -16,7 +16,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         // welcome user
-        SharedPreferences prefs = this.getSharedPreferences("settings", this.MODE_PRIVATE);
+        SharedPreferences prefs = this.getSharedPreferences("user", this.MODE_PRIVATE);
         String name = prefs.getString("name", "");
         TextView menu_title = (TextView) findViewById(R.id.menu_title);
         menu_title.setText("Welcome " + name + " !");
