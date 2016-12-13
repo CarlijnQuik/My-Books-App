@@ -55,26 +55,12 @@ public class BooksActivity extends AppCompatActivity {
 
         Query myBooksQuery = dataRef.child("Books").orderByKey();
 
-        myBooksQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                    Book book = postSnapshot.getValue(Book.class);
-                    books.add(book);
-                    bookAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
         myBooksQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Book book = dataSnapshot.getValue(Book.class);
+                books.add(book);
+                bookAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -109,6 +95,17 @@ public class BooksActivity extends AppCompatActivity {
                 String book_title = this_book.getTitle();
                 String book_author = this_book.getAuthor();
                 show_details(book_id, book_title, book_author);
+            }
+        });
+
+        myBooks.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Book this_book = (Book) parent.getAdapter().getItem(position);
+                dataRef.child("Books").child(this_book.firebasekey).removeValue();
+                books.remove(this_book);
+                bookAdapter.notifyDataSetChanged();
+                return true;
             }
         });
 

@@ -16,6 +16,7 @@ public class Book implements Serializable {
     public String id = null;
     public String title = null;
     public String author = null;
+    public String firebasekey = null;
 
     public String getId() {
 
@@ -30,6 +31,10 @@ public class Book implements Serializable {
     public String getAuthor() {
 
         return this.author;
+    }
+
+    public String getFirebasekey(){
+        return this.firebasekey;
     }
 
     public String getCoverUrl() {

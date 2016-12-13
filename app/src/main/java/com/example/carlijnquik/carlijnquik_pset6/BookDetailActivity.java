@@ -86,7 +86,8 @@ public class BookDetailActivity extends AppCompatActivity {
         book.id = id;
         book.title = title;
         book.author = author;
-        dataRef.child("Books").push().setValue(book);
+        book.firebasekey = dataRef.child("Books").push().getKey();
+        dataRef.child("Books").child(book.firebasekey).setValue(book);
         Toast toast = Toast.makeText(this, "Book added to list!", Toast.LENGTH_SHORT);
         toast.show();
     }
