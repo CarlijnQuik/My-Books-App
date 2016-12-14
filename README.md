@@ -11,3 +11,8 @@ For help with getting started with the chosen OpenLibrary API, took a look at th
 
 The API can be found at:
 - https://openlibrary.org/
+
+Image sources;
+I do not have the right to the images and they can all be found with Google Image Search for the original sources. Examples;
+- http://www.clipartpanda.com/clipart_images/books-for-clip-art-9-743319
+- http://www.solidbackgrounds.com/1920x1080-white-solid-color-background.html
