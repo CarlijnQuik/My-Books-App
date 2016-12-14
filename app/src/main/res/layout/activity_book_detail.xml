@@ -35,6 +35,7 @@
             android:id="@+id/ibAdd"
             android:onClick="onAdd"
             android:elevation="5dp"
+            android:background="@drawable/background"
             android:layout_marginRight="12dp"
             android:layout_marginEnd="12dp"
             android:layout_centerVertical="true"

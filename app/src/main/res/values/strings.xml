@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">carlijnquik-pset6</string>
+    <string name="app_name">My Books</string>
+
+    <string name="hint_user_id">User ID</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_account">Create Account</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="welcome">Welcome to the MyBooks App!</string>
+
 </resources>

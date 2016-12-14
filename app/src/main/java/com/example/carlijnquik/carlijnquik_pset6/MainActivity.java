@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // save users gender
+    // let user choose one example book
     public void onRadioButtonClicked(View view) {
         // Is the view now checked?
         boolean checked = ((RadioButton) view).isChecked();
