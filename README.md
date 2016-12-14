@@ -1,6 +1,6 @@
 Choices in technicalities;
 - Kept elevation for devices with API level 21 and higher.
-- Due to time limitation chose to edit the layouts myself instead of looking for themes etc.
+- Chose to edit the layouts myself instead of looking for themes etc.
 
 For signing in, the Firebase QuickStart example is used with a bit of editing as well as the documentation on this topic.
 - https://github.com/firebase/quickstart-android
