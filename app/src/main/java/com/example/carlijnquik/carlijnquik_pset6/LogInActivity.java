@@ -32,13 +32,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LogInActivity extends BaseActivity implements
+public class LogInActivity extends LogInProgressDialog implements
         View.OnClickListener {
 
     private static final String TAG = "EmailPassword";
 
     private TextView mStatusTextView;
-    private TextView mDetailTextView;
     private EditText mEmailField;
     private EditText mPasswordField;
 
@@ -53,17 +52,16 @@ public class LogInActivity extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emailpassword);
+        setContentView(R.layout.activity_log_in);
 
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
-        mDetailTextView = (TextView) findViewById(R.id.detail);
         mEmailField = (EditText) findViewById(R.id.field_email);
         mPasswordField = (EditText) findViewById(R.id.field_password);
 
         // Buttons
-        findViewById(R.id.email_sign_in_button).setOnClickListener(this);
-        findViewById(R.id.email_create_account_button).setOnClickListener(this);
+        findViewById(R.id.bLogIn).setOnClickListener(this);
+        findViewById(R.id.bCreateAccount).setOnClickListener(this);
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
@@ -75,11 +73,12 @@ public class LogInActivity extends BaseActivity implements
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    // User is logged in
+                    forward_existing_user();
+                    Log.d(TAG, "onAuthStateChanged:logged_in:" + user.getUid());
                 } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    // User is logged out
+                    Log.d(TAG, "onAuthStateChanged:logged_out");
                 }
             }
         };
@@ -138,35 +137,35 @@ public class LogInActivity extends BaseActivity implements
     }
 
     public void forward_new_user() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, NewUserActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void forward_existing_user() {
-        Intent intent = new Intent(this, MenuActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+        finish();
     }
 
-    private void signIn(String email, String password) {
-        Log.d(TAG, "signIn:" + email);
+    private void logIn(String email, String password) {
         if (!validateForm()) {
             return;
         }
 
         showProgressDialog();
 
-        // [START sign_in_with_email]
+        // [START log_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                        Log.d(TAG, "logInWithEmail:onComplete:" + task.isSuccessful());
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(LogInActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -181,7 +180,7 @@ public class LogInActivity extends BaseActivity implements
                         // [END_EXCLUDE]
                     }
                 });
-        // [END sign_in_with_email]
+        // [END log_in_with_email]
     }
 
     private boolean validateForm() {
@@ -209,10 +208,10 @@ public class LogInActivity extends BaseActivity implements
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.email_create_account_button) {
+        if (i == R.id.bCreateAccount) {
             createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        } else if (i == R.id.email_sign_in_button) {
-            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+        } else if (i == R.id.bLogIn) {
+            logIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }
     }
 }

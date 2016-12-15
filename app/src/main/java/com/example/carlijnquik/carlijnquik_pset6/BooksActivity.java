@@ -1,7 +1,9 @@
 package com.example.carlijnquik.carlijnquik_pset6;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,11 +29,14 @@ public class BooksActivity extends AppCompatActivity {
     public DatabaseReference dataRef;
     ListView myBooks;
     ArrayList<Book> books;
-    String name;
     ImageButton ibHome;
     ImageButton ibMyBooks;
     ImageButton ibSearch;
     ImageButton ibLogOut;
+    private FirebaseAuth mAuth;
+    FirebaseUser user;
+    Book this_book;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +45,11 @@ public class BooksActivity extends AppCompatActivity {
 
         books = new ArrayList<>();
 
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
         database = FirebaseDatabase.getInstance();
         dataRef = database.getReference();
-        SharedPreferences prefs = this.getSharedPreferences("user", this.MODE_PRIVATE);
-        name = prefs.getString("name", "");
         ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
         ibMyBooks.setImageResource(R.drawable.this_act);
 
@@ -74,7 +82,7 @@ public class BooksActivity extends AppCompatActivity {
             }
         });
 
-        Query myBooksQuery = dataRef.child("Users").child(name).child("Books").orderByKey();
+        Query myBooksQuery = dataRef.child("Users").child(user.getUid()).child("Books").orderByKey();
 
         myBooksQuery.addChildEventListener(new ChildEventListener() {
             @Override
@@ -106,6 +114,9 @@ public class BooksActivity extends AppCompatActivity {
 
             }
 
+
+
+
         });
 
         myBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -119,13 +130,34 @@ public class BooksActivity extends AppCompatActivity {
             }
         });
 
+        builder = new AlertDialog.Builder(this);
+
         myBooks.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Book this_book = (Book) parent.getAdapter().getItem(position);
-                dataRef.child("Users").child(name).child("Books").child(this_book.firebasekey).removeValue();
-                books.remove(this_book);
-                bookAdapter.notifyDataSetChanged();
+                // ask user whether the input is correct
+                this_book = (Book) parent.getAdapter().getItem(position);
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Yes button_custom clicked
+                                dataRef.child("Users").child(user.getUid()).child("Books").child(this_book.firebasekey).removeValue();
+                                books.remove(this_book);
+                                bookAdapter.notifyDataSetChanged();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button_custom clicked
+                                break;
+                        }
+                    }
+                };
+                builder.setMessage("Are you sure you want to delete this book?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+
+
                 return true;
             }
         });
@@ -143,7 +175,7 @@ public class BooksActivity extends AppCompatActivity {
     }
 
     public void Home_Clicked(){
-        Intent goToSearch = new Intent(this, MenuActivity.class);
+        Intent goToSearch = new Intent(this, HomeActivity.class);
         startActivity(goToSearch);
     }
     public void Search_Clicked(){

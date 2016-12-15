@@ -98,7 +98,7 @@
 
     </RelativeLayout>
 
-    <include android:id="@+id/menu" layout="@layout/menu" />
+    <include android:id="@+id/menu" layout="@layout/menu_layout" />
 
 
 </RelativeLayout>

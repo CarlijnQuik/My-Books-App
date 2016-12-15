@@ -4,7 +4,7 @@ import android.app.ProgressDialog;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 
-public class BaseActivity extends AppCompatActivity {
+public class LogInProgressDialog extends AppCompatActivity {
 
     @VisibleForTesting
     public ProgressDialog mProgressDialog;

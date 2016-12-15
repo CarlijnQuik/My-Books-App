@@ -1,14 +1,17 @@
 package com.example.carlijnquik.carlijnquik_pset6;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MenuActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     ImageButton ibHome;
     ImageButton ibMyBooks;
@@ -18,7 +21,7 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.activity_home);
 
         // views
         ibHome = (ImageButton) findViewById(R.id.ibHome);
@@ -45,12 +48,6 @@ public class MenuActivity extends AppCompatActivity {
                 Log_Out_Clicked();
             }
         });
-
-        // welcome user
-        SharedPreferences prefs = this.getSharedPreferences("user", this.MODE_PRIVATE);
-        String name = prefs.getString("name", "");
-        TextView menu_title = (TextView) findViewById(R.id.menu_title);
-        menu_title.setText("Welcome " + name + " !");
 
     }
 

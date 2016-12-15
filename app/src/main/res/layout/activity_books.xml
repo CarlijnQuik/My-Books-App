@@ -26,7 +26,7 @@
         android:textColor="@android:color/black"
         android:elevation="5dp" />
 
-    <include android:id="@+id/menu" layout="@layout/menu" />
+    <include android:id="@+id/menu" layout="@layout/menu_layout" />
 
     <RelativeLayout
         android:layout_width="wrap_content"

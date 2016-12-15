@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/background"
-    tools:context="com.example.carlijnquik.carlijnquik_pset6.MainActivity">
+    tools:context="com.example.carlijnquik.carlijnquik_pset6.NewUserActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,6 +25,18 @@
         android:textColor="@android:color/black"
         android:id="@+id/textView" />
 
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/go"
+        android:scaleType="fitCenter"
+        android:id="@+id/go"
+        android:onClick="Go"
+        android:layout_marginBottom="11dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView" />
+
     <TextView
         android:text="@string/which_book"
         android:id="@+id/question_book"
@@ -32,32 +44,8 @@
         android:layout_height="wrap_content"
         android:textSize="19sp"
         android:textColor="@android:color/black"
-        android:layout_below="@+id/name_input"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="39dp" />
-
-    <TextView
-        android:text="@string/pick_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="19sp"
-        android:textColor="@android:color/black"
-        android:id="@+id/question_name"
+        android:layout_marginTop="32dp"
         android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="36dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="@string/username"
-        android:ems="10"
-        android:id="@+id/name_input"
-        android:layout_marginTop="43dp"
-        android:layout_alignTop="@+id/question_name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -102,17 +90,5 @@
             android:layout_alignLeft="@+id/other"
             android:layout_alignStart="@+id/other" />
     </RadioGroup>
-
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:srcCompat="@drawable/go"
-        android:scaleType="fitCenter"
-        android:id="@+id/go"
-        android:onClick="Go"
-        android:layout_marginBottom="11dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView" />
 
 </RelativeLayout>

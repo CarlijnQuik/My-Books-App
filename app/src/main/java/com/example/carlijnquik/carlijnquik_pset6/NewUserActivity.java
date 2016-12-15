@@ -7,47 +7,39 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity {
+public class NewUserActivity extends AppCompatActivity {
 
-    SharedPreferences prefs;
-    String name;
-    String gender;
-    EditText name_input;
     Book book;
     FirebaseDatabase database;
     DatabaseReference dataRef;
+    private FirebaseAuth mAuth;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        prefs = this.getSharedPreferences("user", this.MODE_PRIVATE);
-        name_input = (EditText) findViewById(R.id.name_input);
+        setContentView(R.layout.activity_new_user);
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
         database = FirebaseDatabase.getInstance();
         dataRef = database.getReference();
-        forward();
     }
 
-    // check whether user exists, if so go to menu
     public void forward(){
-        name = prefs.getString("name", "");
-        if ( !(name.length() == 0)){
-            Intent go_to_menu = new Intent(this, MenuActivity.class);
-            startActivity(go_to_menu);
-            finish();
-        }
+        Intent go_to_menu = new Intent(this, HomeActivity.class);
+        startActivity(go_to_menu);
+        finish();
     }
 
     // let user choose one example book
@@ -78,17 +70,11 @@ public class MainActivity extends AppCompatActivity {
                     book.author = "Maurice Leblanc";
                 break;
         }
-        name = name_input.getText().toString();
-        book.firebasekey = dataRef.child("Users").child(name).child("Books").push().getKey();
-        dataRef.child("Users").child(name).child("Books").child(book.firebasekey).setValue(book);
+        book.firebasekey = dataRef.child("Users").child(user.getUid()).child("Books").push().getKey();
+        dataRef.child("Users").child(user.getUid()).child("Books").child(book.firebasekey).setValue(book);
     }
 
     public void Go(View view) {
-        name = name_input.getText().toString();
-
-        if ( !(name.length() == 0)){
-            // save user
-            prefs.edit().putString("name", name).apply();
 
             // ask user whether the input is correct
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -102,20 +88,15 @@ public class MainActivity extends AppCompatActivity {
 
                         case DialogInterface.BUTTON_NEGATIVE:
                             //No button_custom clicked
-                            name_input.setText("");
                             break;
                     }
                 }
             };
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Is " + name + " your chosen username?").setPositiveButton("Yes", dialogClickListener)
+            builder.setMessage("Are you sure you want to continue?").setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
 
-        }
-        else {
-            Toast toast = Toast.makeText(this, "Please enter name", Toast.LENGTH_SHORT);
-            toast.show();
-        }
+
     }
 
 

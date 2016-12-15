@@ -3,13 +3,9 @@ package com.example.carlijnquik.carlijnquik_pset6;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,7 +31,7 @@ public class BookAdapter extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.book_item, null);
+            convertView = inflater.inflate(R.layout.book_item_list, null);
         }
 
         Book book = books.get(position);

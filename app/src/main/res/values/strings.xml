@@ -15,6 +15,7 @@
     <string name="loading">Loading…</string>
 
     <string name="welcome">Welcome to the MyBooks App!</string>
+    <string name="welcome_home">Choose what you want to do...</string>
     <string name="which_book">Which of these books do you like most?</string>
     <string name="pick_username">Pick a username</string>
     <string name="username">Username</string>

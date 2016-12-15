@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -37,16 +39,21 @@ public class BookDetailActivity extends AppCompatActivity {
     ImageButton ibAdd;
     FirebaseDatabase database;
     DatabaseReference dataRef;
-    String name;
     ImageButton ibHome;
     ImageButton ibMyBooks;
     ImageButton ibSearch;
     ImageButton ibLogOut;
+    private FirebaseAuth mAuth;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
 
         tvPublisher = (TextView) findViewById(R.id.tvPublisher);
         tvPageCount = (TextView) findViewById(R.id.tvPageCount);
@@ -94,8 +101,6 @@ public class BookDetailActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         dataRef = database.getReference();
-        SharedPreferences prefs = this.getSharedPreferences("user", this.MODE_PRIVATE);
-        name = prefs.getString("name", "");
 
         String request_details = "http://openlibrary.org/" + "books/" + id + ".json";
         RetrieveDetails retrieveDetails = new RetrieveDetails(this);
@@ -112,7 +117,7 @@ public class BookDetailActivity extends AppCompatActivity {
         book.title = title;
         book.author = author;
         book.firebasekey = dataRef.child("Books").push().getKey();
-        dataRef.child("Users").child(name).child("Books").child(book.firebasekey).setValue(book);
+        dataRef.child("Users").child(user.getUid()).child("Books").child(book.firebasekey).setValue(book);
         Toast toast = Toast.makeText(this, "Book added to list!", Toast.LENGTH_SHORT);
         toast.show();
     }
