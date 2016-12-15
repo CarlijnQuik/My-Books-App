@@ -10,10 +10,41 @@ import android.widget.TextView;
 
 public class MenuActivity extends AppCompatActivity {
 
+    ImageButton ibHome;
+    ImageButton ibMyBooks;
+    ImageButton ibSearch;
+    ImageButton ibLogOut;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        // views
+        ibHome = (ImageButton) findViewById(R.id.ibHome);
+        ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
+        ibSearch = (ImageButton) findViewById(R.id.ibSearch);
+        ibLogOut = (ImageButton) findViewById(R.id.ibLogOut);
+
+        ibHome.setImageResource(R.drawable.this_act);
+        ibMyBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                My_Books_Clicked();
+            }
+        });
+        ibSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Search_Clicked();
+            }
+        });
+        ibLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log_Out_Clicked();
+            }
+        });
 
         // welcome user
         SharedPreferences prefs = this.getSharedPreferences("user", this.MODE_PRIVATE);
@@ -21,28 +52,18 @@ public class MenuActivity extends AppCompatActivity {
         TextView menu_title = (TextView) findViewById(R.id.menu_title);
         menu_title.setText("Welcome " + name + " !");
 
-        // decide what clicking the search_button does
-        ImageButton search_button = (ImageButton) findViewById(R.id.search_button);
-        search_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    }
 
-                Intent go_to_search = new Intent(MenuActivity.this, SearchActivity.class);
-                startActivity(go_to_search);
-
-            }
-        });
-
-        // decide what clicking the books_button does
-        ImageButton books_button = (ImageButton) findViewById(R.id.books_button);
-        books_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent go_to_books = new Intent(MenuActivity.this, BooksActivity.class);
-                startActivity(go_to_books);
-
-            }
-        });
+    public void My_Books_Clicked(){
+        Intent goToBooks = new Intent(this, BooksActivity.class);
+        startActivity(goToBooks);
+    }
+    public void Search_Clicked(){
+        Intent goToSearch = new Intent(this, SearchActivity.class);
+        startActivity(goToSearch);
+    }
+    public void Log_Out_Clicked(){
+        Intent goToLogOut = new Intent(this, LogOutActivity.class);
+        startActivity(goToLogOut);
     }
 }

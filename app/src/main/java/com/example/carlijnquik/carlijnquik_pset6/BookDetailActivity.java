@@ -9,16 +9,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -37,10 +34,14 @@ public class BookDetailActivity extends AppCompatActivity {
     String title;
     String author;
     ImageView books;
-    ImageView add;
+    ImageButton ibAdd;
     FirebaseDatabase database;
     DatabaseReference dataRef;
     String name;
+    ImageButton ibHome;
+    ImageButton ibMyBooks;
+    ImageButton ibSearch;
+    ImageButton ibLogOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +54,36 @@ public class BookDetailActivity extends AppCompatActivity {
         TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
         TextView tvAuthor = (TextView) findViewById(R.id.tvAuthor);
         ivBookCover = (ImageView) findViewById(R.id.ivBookCover);
-        books = (ImageView) findViewById(R.id.ibBooksActivity);
-        add = (ImageView) findViewById(R.id.ibAdd);
+        ibAdd = (ImageButton) findViewById(R.id.ibSearch);
+        ibAdd.setImageResource(android.R.drawable.ic_input_add);
+        TextView tvAdd = (TextView) findViewById(R.id.tvSearch);
+        tvAdd.setText("Add Book");
         not_available = "Info not available";
+
+        // views
+        ibHome = (ImageButton) findViewById(R.id.ibHome);
+        ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
+        ibLogOut = (ImageButton) findViewById(R.id.ibLogOut);
+
+        ibHome.setImageResource(R.drawable.this_act);
+        ibMyBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                My_Books_Clicked();
+            }
+        });
+        ibLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log_Out_Clicked();
+            }
+        });
+        ibAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAdd();
+            }
+        });
 
         Bundle extras = getIntent().getExtras();
         id = extras.getString("id", "");
@@ -75,17 +103,10 @@ public class BookDetailActivity extends AppCompatActivity {
 
         Picasso.with(this).load(Uri.parse("http://covers.openlibrary.org/b/olid/" + id + "-L.jpg?default=false")).error(R.drawable.nocover).into(ivBookCover);
 
-        books.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent go_to_books = new Intent(BookDetailActivity.this, BooksActivity.class);
-                startActivity(go_to_books);
-            }
-        });
 
     }
 
-    public void onAdd(View view) {
+    public void onAdd() {
         Book book = new Book();
         book.id = id;
         book.title = title;
@@ -196,4 +217,18 @@ public class BookDetailActivity extends AppCompatActivity {
         }
 
     }
+
+    public void My_Books_Clicked(){
+        Intent goToBooks = new Intent(this, BooksActivity.class);
+        startActivity(goToBooks);
+    }
+    public void Search_Clicked(){
+        Intent goToSearch = new Intent(this, SearchActivity.class);
+        startActivity(goToSearch);
+    }
+    public void Log_Out_Clicked(){
+        Intent goToLogOut = new Intent(this, LogOutActivity.class);
+        startActivity(goToLogOut);
+    }
+
 }

@@ -2,36 +2,34 @@ package com.example.carlijnquik.carlijnquik_pset6;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class BooksActivity extends AppCompatActivity {
 
-    private FirebaseDatabase database;
-    private DatabaseReference dataRef;
+    public FirebaseDatabase database;
+    public DatabaseReference dataRef;
     ListView myBooks;
     ArrayList<Book> books;
     String name;
+    ImageButton ibHome;
+    ImageButton ibMyBooks;
+    ImageButton ibSearch;
+    ImageButton ibLogOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +42,37 @@ public class BooksActivity extends AppCompatActivity {
         dataRef = database.getReference();
         SharedPreferences prefs = this.getSharedPreferences("user", this.MODE_PRIVATE);
         name = prefs.getString("name", "");
+        ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
+        ibMyBooks.setImageResource(R.drawable.this_act);
 
         myBooks = (ListView) findViewById(R.id.my_books);
         final BookAdapter bookAdapter = new BookAdapter(this, books);
         myBooks.setAdapter(bookAdapter);
+
+        // views
+        ibHome = (ImageButton) findViewById(R.id.ibHome);
+        ibSearch = (ImageButton) findViewById(R.id.ibSearch);
+        ibLogOut = (ImageButton) findViewById(R.id.ibLogOut);
+
+
+        ibHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Home_Clicked();
+            }
+        });
+        ibSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Search_Clicked();
+            }
+        });
+        ibLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log_Out_Clicked();
+            }
+        });
 
         Query myBooksQuery = dataRef.child("Users").child(name).child("Books").orderByKey();
 
@@ -115,6 +140,19 @@ public class BooksActivity extends AppCompatActivity {
         extras.putString("author", author);
         intent.putExtras(extras);
         startActivity(intent);
+    }
+
+    public void Home_Clicked(){
+        Intent goToSearch = new Intent(this, MenuActivity.class);
+        startActivity(goToSearch);
+    }
+    public void Search_Clicked(){
+        Intent goToSearch = new Intent(this, SearchActivity.class);
+        startActivity(goToSearch);
+    }
+    public void Log_Out_Clicked(){
+        Intent goToUser = new Intent(this, LogOutActivity.class);
+        startActivity(goToUser);
     }
 
 }

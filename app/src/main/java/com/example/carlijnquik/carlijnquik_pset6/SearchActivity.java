@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,6 +32,10 @@ public class SearchActivity extends AppCompatActivity {
     Button show_more;
     Button previous;
     int count;
+    ImageButton ibHome;
+    ImageButton ibMyBooks;
+    ImageButton ibSearch;
+    ImageButton ibLogOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,32 @@ public class SearchActivity extends AppCompatActivity {
         search = (EditText) findViewById(searchrequest);
         String tag = search.getText().toString();
         query = Uri.encode(tag);
+
+        // views
+        ibHome = (ImageButton) findViewById(R.id.ibHome);
+        ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
+        ibSearch = (ImageButton) findViewById(R.id.ibSearch);
+        ibLogOut = (ImageButton) findViewById(R.id.ibLogOut);
+
+        ibHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Home_Clicked();
+            }
+        });
+        ibMyBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                My_Books_Clicked();
+            }
+        });
+        ibSearch.setImageResource(R.drawable.this_act);
+        ibLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log_Out_Clicked();
+            }
+        });
 
 
     }
@@ -137,6 +168,19 @@ public class SearchActivity extends AppCompatActivity {
         intent.putExtras(extras);
         startActivity(intent);
 
+    }
+
+    public void My_Books_Clicked(){
+        Intent goToBooks = new Intent(this, BooksActivity.class);
+        startActivity(goToBooks);
+    }
+    public void Home_Clicked(){
+        Intent goToHome = new Intent(this, MenuActivity.class);
+        startActivity(goToHome);
+    }
+    public void Log_Out_Clicked(){
+        Intent goToLogOut = new Intent(this, LogOutActivity.class);
+        startActivity(goToLogOut);
     }
 
 
