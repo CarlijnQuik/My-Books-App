@@ -1,6 +1,13 @@
+Pset6 Minor Programming University of Amsterdam
+
+- Name: Carlijn Quik 
+- Student Number: 11334231 
+- Description: In this app you can look up books and create a list of books to read.
+
 Choices in technicalities;
 - Kept elevation for devices with API level 21 and higher.
 - Chose to edit the layouts myself instead of looking for themes etc.
+- Chose to create a custom menu instead of using for instance a different type of activity with a menu button. This is because in the previous psets those activities were not used. When creating the next App, I will consider using a different type of menu.
 
 For signing in, the Firebase QuickStart example is used with a bit of editing as well as the documentation on this topic.
 - https://github.com/firebase/quickstart-android
