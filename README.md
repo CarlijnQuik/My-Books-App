@@ -24,6 +24,3 @@ I do not owe the rights of the images and they can all be found with Google Imag
 - http://www.solidbackgrounds.com/1920x1080-white-solid-color-background.html
 
 My phone decided to stop taking screenshots, so here are pictures of my phone with the LogInActivity and BooksActivity;
-
-https://cloud.githubusercontent.com/assets/22945709/21276065/08380534-c3d0-11e6-8678-ec3382ad233a.JPG
-https://cloud.githubusercontent.com/assets/22945709/21276066/0839eb88-c3d0-11e6-8f6b-de2b1a11d6d7.JPG
