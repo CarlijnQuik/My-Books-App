@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -36,7 +37,7 @@ public class BookDetailActivity extends AppCompatActivity {
     DatabaseReference dataRef;
     FirebaseUser user;
 
-    String API_BASE_URL = "http://openlibrary.org/";
+    String API_BASE_URL = "http://openlibrary.org";
     String json = ".json";
 
     @Override
@@ -69,14 +70,14 @@ public class BookDetailActivity extends AppCompatActivity {
 
         tvTitle.setText(title);
         tvAuthor.setText(author);
-        Picasso.with(this).load(Uri.parse(API_BASE_URL + "b/olid/" + id + "-L.jpg?default=false")).error(R.drawable.nocover).into(ivBookCover);
+        Picasso.with(this).load(Uri.parse("http://covers.openlibrary.org/b/olid/" + id + "-L.jpg?default=false")).error(R.drawable.nocover).into(ivBookCover);
 
     }
 
     public void retrieveDetails(){
-        String request_details = API_BASE_URL + "books/" + id + json;
+        String requestDetails = API_BASE_URL + "/books/" + id + json;
         RetrieveDetails retrieveDetails = new RetrieveDetails(this);
-        retrieveDetails.execute(request_details);
+        retrieveDetails.execute(requestDetails);
     }
 
     /**
@@ -126,10 +127,10 @@ public class BookDetailActivity extends AppCompatActivity {
                     if (identifiers.has("works")){
                         final JSONArray works = identifiers.getJSONArray("works");
                         JSONObject key = works.getJSONObject(0);
-                        String key_works = key.getString("key");
+                        String keyWorks = key.getString("key");
 
                         // get description using key
-                        retrieveDescription(key_works);
+                        retrieveDescription(keyWorks);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -142,9 +143,9 @@ public class BookDetailActivity extends AppCompatActivity {
      * Use key to lookup description.
      **/
     public void retrieveDescription(String key){
-        String request_description = API_BASE_URL + key + json;
+        String requestDescription = API_BASE_URL + key + json;
         RetrieveDescription retrieveDescription = new RetrieveDescription(this);
-        retrieveDescription.execute(request_description);
+        retrieveDescription.execute(requestDescription);
 
     }
 

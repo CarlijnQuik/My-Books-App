@@ -35,10 +35,6 @@ public class Book implements Serializable {
         return "http://covers.openlibrary.org/b/olid/" + id + "-M.jpg?default=false";
     }
 
-    public String getLargeCoverUrl() {
-        return "http://covers.openlibrary.org/b/olid/" + id + "-L.jpg?default=false";
-    }
-
     /**
      * Obtain data from JSON Object and add to book where possible.
      **/

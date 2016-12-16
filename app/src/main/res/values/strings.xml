@@ -43,6 +43,8 @@
 
     <string name="contentdescription">Image Display</string>
 
+    <string name="searching">Searching...</string>
+
     <string name="my_list_of_books">My List Of Books</string>
     <string name="delete_instruction">Hold a book to remove it</string>
     <string name="empty_list">Your list is empty</string>

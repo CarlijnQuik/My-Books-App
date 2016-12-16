@@ -51,10 +51,18 @@ public class SearchResultsActivity extends AppCompatActivity {
         search(API_BASE_URL + SEARCH_URL + query + page + String.valueOf(count));
     }
 
+    /**
+     * Keeps user's last search when they come back to SearchActivity.
+     **/
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
     public void initializeViews(){
-        String message = "Searching for" + query;
         tvCount = (TextView) findViewById(R.id.tvCount);
-        tvCount.setText(message);
+        tvCount.setText(R.string.searching);
         progressbar = (ProgressBar) findViewById(R.id.progressbar);
         progressbar.setVisibility(ProgressBar.VISIBLE);
 
