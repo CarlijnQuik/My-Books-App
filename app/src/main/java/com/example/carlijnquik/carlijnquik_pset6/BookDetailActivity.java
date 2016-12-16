@@ -28,28 +28,12 @@ import org.json.JSONObject;
 
 public class BookDetailActivity extends AppCompatActivity {
 
-    TextView tvTitle;
-    TextView tvAuthor;
-    TextView tvPublisher;
-    TextView tvPageCount;
-    TextView tvDescription;
-    ImageView ivBookCover;
-
-    ImageButton ibHome;
-    ImageButton ibMyBooks;
-    ImageButton ibLogOut;
-    ImageButton ibAdd;
-    TextView tvAdd;
-
     String not_available;
-    String key_works;
     String id;
     String title;
     String author;
 
-    FirebaseDatabase database;
     DatabaseReference dataRef;
-    FirebaseAuth mAuth;
     FirebaseUser user;
 
     String API_BASE_URL = "http://openlibrary.org/";
@@ -60,47 +44,33 @@ public class BookDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        dataRef = FirebaseDatabase.getInstance().getReference();
+
         initializeViews();
-        getExtras();
+        setMenu();
         retrieveDetails();
-        initializeFirebase();
-        setMenuListeners();
+
     }
 
     /**
      * Initialize views in the layout.
      **/
     private void initializeViews(){
-        // book details
-        tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvAuthor = (TextView) findViewById(R.id.tvAuthor);
-        ivBookCover = (ImageView) findViewById(R.id.ivBookCover);
-        tvPublisher = (TextView) findViewById(R.id.tvPublisher);
-        tvPageCount = (TextView) findViewById(R.id.tvPageCount);
-        tvDescription = (TextView) findViewById(R.id.tvDescription);
 
-        // menu buttons
-        ibAdd = (ImageButton) findViewById(R.id.ibSearch);
-        ibAdd.setImageResource(android.R.drawable.ic_input_add);
-        tvAdd = (TextView) findViewById(R.id.tvSearch);
-        tvAdd.setText(R.string.add);
-        ibHome = (ImageButton) findViewById(R.id.ibHome);
-        ibHome.setImageResource(R.drawable.this_act);
-        ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
-        ibLogOut = (ImageButton) findViewById(R.id.ibLogOut);
-    }
+        TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
+        TextView tvAuthor = (TextView) findViewById(R.id.tvAuthor);
+        ImageView ivBookCover = (ImageView) findViewById(R.id.ivBookCover);
 
-    /**
-     * Get intent with information about id, title and author and set views.
-     **/
-    public void getExtras(){
         Bundle extras = getIntent().getExtras();
         title = extras.getString("title", "");
         author = extras.getString("author", "");
         id = extras.getString("id", "");
+
         tvTitle.setText(title);
         tvAuthor.setText(author);
         Picasso.with(this).load(Uri.parse(API_BASE_URL + "b/olid/" + id + "-L.jpg?default=false")).error(R.drawable.nocover).into(ivBookCover);
+
     }
 
     public void retrieveDetails(){
@@ -130,7 +100,10 @@ public class BookDetailActivity extends AppCompatActivity {
         // onPostExecute()
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
             not_available = "Info not available";
+            TextView tvPublisher = (TextView) findViewById(R.id.tvPublisher);
+            TextView tvPageCount = (TextView) findViewById(R.id.tvPageCount);
 
             if (result.length() == 0) {
                 Toast.makeText(context, "Error loading books", Toast.LENGTH_LONG).show();
@@ -153,8 +126,10 @@ public class BookDetailActivity extends AppCompatActivity {
                     if (identifiers.has("works")){
                         final JSONArray works = identifiers.getJSONArray("works");
                         JSONObject key = works.getJSONObject(0);
-                        key_works = key.getString("key");
-                        retrieve_description(key_works);
+                        String key_works = key.getString("key");
+
+                        // get description using key
+                        retrieveDescription(key_works);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -166,16 +141,18 @@ public class BookDetailActivity extends AppCompatActivity {
     /**
      * Use key to lookup description.
      **/
-    public void retrieve_description(String key){
-        String request_description = "http://openlibrary.org" + key + ".json";
+    public void retrieveDescription(String key){
+        String request_description = API_BASE_URL + key + json;
         RetrieveDescription retrieveDescription = new RetrieveDescription(this);
         retrieveDescription.execute(request_description);
 
     }
 
     class RetrieveDescription extends AsyncTask<String, Void, String> {
+
         BookDetailActivity activity;
         Context context;
+        TextView tvDescription = (TextView) findViewById(R.id.tvDescription);
 
         public RetrieveDescription(BookDetailActivity activity){
             this.activity = activity;
@@ -212,56 +189,51 @@ public class BookDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void initializeFirebase(){
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        database = FirebaseDatabase.getInstance();
-        dataRef = database.getReference();
-    }
-
     /**
      * Initialize menu.
      **/
-    private void setMenuListeners(){
+    private void setMenu(){
+
+        TextView tvAdd = (TextView) findViewById(R.id.tvSearch);
+        tvAdd.setText(R.string.add);
+
+        ImageButton ibAdd = (ImageButton) findViewById(R.id.ibSearch);
+        ibAdd.setImageResource(android.R.drawable.ic_input_add);
         ibAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onAdd();
+                Book book = new Book();
+                book.id = id;
+                book.title = title;
+                book.author = author;
+                book.firebasekey = dataRef.child("Books").push().getKey();
+                dataRef.child("Users").child(user.getUid()).child("Books").child(book.firebasekey).setValue(book);
+
+                // notify user
+                Toast.makeText(getApplicationContext(), "Book added to list!", Toast.LENGTH_SHORT).show();
             }
         });
-        ibMyBooks.setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.ibMyBooks).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myBooksClicked();
+                startActivity(new Intent(getApplicationContext(), BooksActivity.class));
             }
         });
-        ibLogOut.setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.ibLogOut).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logOutClicked();
+                startActivity(new Intent(getApplicationContext(), LogOutActivity.class));
             }
         });
-    }
 
-    public void onAdd() {
-        // add book to firebase database
-        Book book = new Book();
-        book.id = id;
-        book.title = title;
-        book.author = author;
-        book.firebasekey = dataRef.child("Books").push().getKey();
-        dataRef.child("Users").child(user.getUid()).child("Books").child(book.firebasekey).setValue(book);
-
-        // notify user
-        Toast.makeText(this, "Book added to list!", Toast.LENGTH_SHORT).show();
-    }
-    public void myBooksClicked(){
-        Intent goToBooks = new Intent(this, BooksActivity.class);
-        startActivity(goToBooks);
-    }
-    public void logOutClicked(){
-        Intent goToLogOut = new Intent(this, LogOutActivity.class);
-        startActivity(goToLogOut);
+        findViewById(R.id.ibHome).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
     }
 
 }

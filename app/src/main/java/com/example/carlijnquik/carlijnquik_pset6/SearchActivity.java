@@ -18,67 +18,30 @@ import android.widget.Toast;
 
 public class SearchActivity extends AppCompatActivity {
 
-    ImageButton ibHome;
-    ImageButton ibMyBooks;
-    ImageButton ibSearch;
-    ImageButton ibLogOut;
-    ImageButton ibRequest;
-    EditText etSearch_request;
+    EditText etSearchRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        initializeViews();
-        setListeners();
-
-    }
-
-    public void initializeViews(){
-        ibHome = (ImageButton) findViewById(R.id.ibHome);
-        ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
-        ibLogOut = (ImageButton) findViewById(R.id.ibLogOut);
-        ibSearch = (ImageButton) findViewById(R.id.ibSearch);
-        ibRequest = (ImageButton) findViewById(R.id.ibRequest);
-        etSearch_request = (EditText) findViewById(R.id.etSearch_request);
-        ibSearch.setImageResource(R.drawable.this_act);
-
         // set EditText to empty
-        etSearch_request.setText("");
+        etSearchRequest = (EditText) findViewById(R.id.etSearch_request);
 
         // magnifying glass on keyboard
-        etSearch_request.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        etSearchRequest.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if(i == EditorInfo.IME_ACTION_SEARCH){
-                    Search(textView);
+                    search(textView);
                     return true;
                 }
                 return false;
             }
         });
-    }
 
-    public void setListeners(){
-        ibHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                homeClicked();
-            }
-        });
-        ibMyBooks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                myBooksClicked();
-            }
-        });
-        ibLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logOutClicked();
-            }
-        });
+        setMenu();
+
     }
 
     /**
@@ -90,9 +53,9 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    public void Search(View view) {
+    public void search(View view) {
         // get search request
-        String tag = etSearch_request.getText().toString();
+        String tag = etSearchRequest.getText().toString();
         String query = Uri.encode(tag);
 
         // go to results
@@ -105,18 +68,38 @@ public class SearchActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(this, "Please enter a searchrequest", Toast.LENGTH_SHORT);
             toast.show();
         }
+
     }
 
-    public void myBooksClicked(){
-        Intent goToBooks = new Intent(this, BooksActivity.class);
-        startActivity(goToBooks);
+    /**
+     * Initialize menu.
+     **/
+    public void setMenu(){
+
+        ImageButton ibSearch = (ImageButton) findViewById(R.id.ibSearch);
+        ibSearch.setImageResource(R.drawable.this_act);
+
+        findViewById(R.id.ibHome).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
+
+        findViewById(R.id.ibMyBooks).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), BooksActivity.class));
+            }
+        });
+
+        findViewById(R.id.ibLogOut).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), LogOutActivity.class));
+            }
+        });
+
     }
-    public void homeClicked(){
-        Intent goToHome = new Intent(this, HomeActivity.class);
-        startActivity(goToHome);
-    }
-    public void logOutClicked(){
-        Intent goToLogOut = new Intent(this, LogOutActivity.class);
-        startActivity(goToLogOut);
-    }
+
 }

@@ -28,20 +28,11 @@ import java.util.ArrayList;
 
 public class BooksActivity extends AppCompatActivity {
 
-    FirebaseDatabase database;
     DatabaseReference dataRef;
-    FirebaseAuth mAuth;
     FirebaseUser user;
-
-    ImageButton ibHome;
-    ImageButton ibMyBooks;
-    ImageButton ibSearch;
-    ImageButton ibLogOut;
     ListView listOfBooks;
-    TextView tvInstruction;
-
     ArrayList<Book> books;
-    Book this_book;
+    Book book;
     AlertDialog.Builder builder;
     BookAdapter bookAdapter;
     Query myBooksQuery;
@@ -53,50 +44,30 @@ public class BooksActivity extends AppCompatActivity {
 
         books = new ArrayList<>();
 
-        initializeViews();
-        setInstruction();
-        initializeFirebase();
-        setAdapter();
-        setListeners();
-    }
+        // initialize firebase
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        dataRef = FirebaseDatabase.getInstance().getReference();
+        myBooksQuery = dataRef.child("Users").child(user.getUid()).child("Books").orderByKey();
 
-    /**
-     * Initializes views in the layout.
-     **/
-    public void initializeViews(){
+        // set the list adapter
         listOfBooks = (ListView) findViewById(R.id.my_books);
-        tvInstruction = (TextView) findViewById(R.id.tvInstruction);
+        bookAdapter = new BookAdapter(this, books);
+        listOfBooks.setAdapter(bookAdapter);
 
-        // menu buttons
-        ibHome = (ImageButton) findViewById(R.id.ibHome);
-        ibSearch = (ImageButton) findViewById(R.id.ibSearch);
-        ibLogOut = (ImageButton) findViewById(R.id.ibLogOut);
-        ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
-        ibMyBooks.setImageResource(R.drawable.this_act);
+        setMenu();
+        setInstruction();
+        setListeners();
+
     }
+
     public void setInstruction(){
+        TextView tvInstruction = (TextView) findViewById(R.id.tvInstruction);
         if(books.isEmpty()){
             tvInstruction.setText(R.string.empty_list);
         }
         else{
             tvInstruction.setText(R.string.delete_instruction);
         }
-    }
-
-    public void initializeFirebase(){
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        database = FirebaseDatabase.getInstance();
-        dataRef = database.getReference();
-        myBooksQuery = dataRef.child("Users").child(user.getUid()).child("Books").orderByKey();
-    }
-
-    /**
-     * Set the listadapter.
-     **/
-    public void setAdapter(){
-        bookAdapter = new BookAdapter(this, books);
-        listOfBooks.setAdapter(bookAdapter);
     }
 
     public void setListeners(){
@@ -123,12 +94,14 @@ public class BooksActivity extends AppCompatActivity {
             }
         });
 
-        // list of books in adapter
+        // clicking a book
         listOfBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                this_book = (Book) parent.getAdapter().getItem(position);
-                getBookDetails();
+                book = (Book) parent.getAdapter().getItem(position);
+
+                // sent user to book details
+                goToDetails();
             }
         });
 
@@ -136,15 +109,15 @@ public class BooksActivity extends AppCompatActivity {
         listOfBooks.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                this_book = (Book) parent.getAdapter().getItem(position);
+                book = (Book) parent.getAdapter().getItem(position);
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
                                 //Yes button_custom clicked
-                                dataRef.child("Users").child(user.getUid()).child("Books").child(this_book.firebasekey).removeValue();
-                                books.remove(this_book);
+                                dataRef.child("Users").child(user.getUid()).child("Books").child(book.firebasekey).removeValue();
+                                books.remove(book);
                                 bookAdapter.notifyDataSetChanged();
                                 setInstruction();
                                 break;
@@ -160,37 +133,12 @@ public class BooksActivity extends AppCompatActivity {
             }
         });
 
-        // menu
-        ibHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                homeClicked();
-            }
-        });
-        ibSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchClicked();
-            }
-        });
-        ibLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logOutClicked();
-            }
-        });
     }
 
-    /**
-     * Initialize click.
-     **/
-    public void getBookDetails(){
-        String book_id = this_book.getId();
-        String book_title = this_book.getTitle();
-        String book_author = this_book.getAuthor();
-        goToDetails(book_id, book_title, book_author);
-    }
-    public void goToDetails(String id, String title, String author) {
+    public void goToDetails(){
+        String id = book.getId();
+        String title = book.getTitle();
+        String author = book.getAuthor();
         Intent intent = new Intent(this, BookDetailActivity.class);
         Bundle extras = new Bundle();
         extras.putString("id", id);
@@ -203,17 +151,32 @@ public class BooksActivity extends AppCompatActivity {
     /**
      * Initialize menu.
      **/
-    public void homeClicked(){
-        Intent goToSearch = new Intent(this, HomeActivity.class);
-        startActivity(goToSearch);
-    }
-    public void searchClicked(){
-        Intent goToSearch = new Intent(this, SearchActivity.class);
-        startActivity(goToSearch);
-    }
-    public void logOutClicked(){
-        Intent goToUser = new Intent(this, LogOutActivity.class);
-        startActivity(goToUser);
+    public void setMenu(){
+
+        ImageButton ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);;
+        ibMyBooks.setImageResource(R.drawable.this_act);
+
+        findViewById(R.id.ibHome).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
+
+        findViewById(R.id.ibSearch).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+            }
+        });
+
+        findViewById(R.id.ibLogOut).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), LogOutActivity.class));
+            }
+        });
+
     }
 
 }

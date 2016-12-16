@@ -32,7 +32,7 @@
         android:layout_height="60dp"
         android:scaleType="fitCenter"
         android:padding="7dp"
-        android:onClick="Search"
+        android:onClick="search"
         app:srcCompat="@drawable/magnifying_glass"
         android:id="@+id/ibRequest"
         android:background="@drawable/background"

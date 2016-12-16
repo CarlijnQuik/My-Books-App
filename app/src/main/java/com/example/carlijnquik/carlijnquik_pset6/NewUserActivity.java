@@ -19,11 +19,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class NewUserActivity extends AppCompatActivity {
 
-    Book book;
     FirebaseDatabase database;
     DatabaseReference dataRef;
     FirebaseAuth mAuth;
     FirebaseUser user;
+    Book book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +66,14 @@ public class NewUserActivity extends AppCompatActivity {
                     book.author = "Maurice Leblanc";
                 break;
         }
-        book.firebasekey = dataRef.child("Users").child(user.getUid()).child("Books").push().getKey();
-        dataRef.child("Users").child(user.getUid()).child("Books").child(book.firebasekey).setValue(book);
+
     }
 
     public void Go(View view) {
+
+            // add chosen book to database
+            book.firebasekey = dataRef.child("Users").child(user.getUid()).child("Books").push().getKey();
+            dataRef.child("Users").child(user.getUid()).child("Books").child(book.firebasekey).setValue(book);
 
             // ask user whether the input is correct
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {

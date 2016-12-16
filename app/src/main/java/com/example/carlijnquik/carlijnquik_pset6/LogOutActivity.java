@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LogOutActivity extends AppCompatActivity {
 
-    Button Log_Out;
+    Button logOut;
     FirebaseAuth mAuth;
 
     @Override
@@ -27,8 +27,8 @@ public class LogOutActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // initialize listener
-        Log_Out = (Button) findViewById(R.id.log_out_button);
-        Log_Out.setOnClickListener(new View.OnClickListener() {
+        logOut = (Button) findViewById(R.id.log_out_button);
+        logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signOut();
