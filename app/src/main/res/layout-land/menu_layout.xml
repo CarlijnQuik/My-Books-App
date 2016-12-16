@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="5dp"
+    android:layout_gravity="bottom"
+    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent">
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="65dp"
+            android:scaleType="fitCenter"
+            android:padding="2dp"
+            android:contentDescription="@string/contentdescription"
+            android:background="@drawable/background"
+            app:srcCompat="@drawable/logout"
+            android:id="@+id/ibLogOut"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="65dp"
+            android:contentDescription="@string/contentdescription"
+            android:background="@drawable/background"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/books"
+            android:id="@+id/ibMyBooks"
+            android:layout_below="@+id/ibLogOut"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="11dp" />
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="65dp"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/contentdescription"
+            android:padding="2dp"
+            android:background="@drawable/background"
+            app:srcCompat="@drawable/search"
+            android:id="@+id/ibSearch"
+            android:layout_below="@+id/ibMyBooks"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp" />
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="65dp"
+            android:scaleType="fitCenter"
+            android:padding="2dp"
+            android:contentDescription="@string/contentdescription"
+            android:background="@drawable/background"
+            app:srcCompat="@drawable/home"
+            android:id="@+id/ibHome"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

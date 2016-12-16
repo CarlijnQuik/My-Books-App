@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_book_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="5dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
+    tools:context="com.example.carlijnquik.carlijnquik_pset6.SearchActivity">
+
+    <EditText
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/search_instruction"
+        android:imeOptions="actionSearch"
+        android:textColorHint="@android:color/black"
+        android:ems="10"
+        android:id="@+id/etSearch_request"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <include android:id="@+id/menu" layout="@layout/menu_layout"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="fitCenter"
+        android:padding="7dp"
+        android:onClick="search"
+        app:srcCompat="@drawable/magnifying_glass"
+        android:id="@+id/ibRequest"
+        android:background="@drawable/background"
+        android:contentDescription="@string/contentdescription"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/etSearch_request"
+        android:layout_toEndOf="@+id/etSearch_request" />
+
+</RelativeLayout>

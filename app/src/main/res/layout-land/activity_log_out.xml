@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:weightSum="4">
+
+        <TextView
+            android:text="@string/log_out_question"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:layout_marginBottom="20dp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvWelcome" />
+
+        <Button
+            android:id="@+id/log_out_button"
+            android:layout_width="130dp"
+            android:layout_height="54dp"
+            android:text="@string/sign_out"
+            android:background="@drawable/background" />
+
+        <TextView
+            android:id="@+id/detail"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:visibility="invisible"
+            tools:text="@string/example_id" />
+
+        <TextView
+            android:id="@+id/status"
+            android:visibility="invisible"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/signed_out" />
+
+</LinearLayout>

@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
+    tools:context=".SearchActivity"
+    android:weightSum="1">
+
+        <ScrollView
+            android:layout_width="450dp"
+            android:layout_height="413dp"
+            android:layout_marginBottom="5dp">
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <ImageView
+                    android:contentDescription="@string/contentdescription"
+                    android:id="@+id/ivBookCover"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="150dp"
+                    android:layout_height="200dp" />
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:textColor="@android:color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="32sp"
+                    android:layout_marginTop="8dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" />
+
+                <TextView
+                    android:id="@+id/tvAuthor"
+                    android:textColor="@android:color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/published_by"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvPublisher"
+                    android:textColor="@android:color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvPageCount"
+                    android:textColor="@android:color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:text="@string/description"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@android:color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:id="@+id/textView4" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textColor="@android:color/black"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvDescription"
+                    android:gravity="center" />
+            </LinearLayout>
+        </ScrollView>
+
+    <include android:id="@+id/menu" layout="@layout/menu_layout" />
+
+</RelativeLayout>
