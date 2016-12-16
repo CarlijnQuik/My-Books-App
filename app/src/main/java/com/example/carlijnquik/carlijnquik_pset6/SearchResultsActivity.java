@@ -20,24 +20,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchResultsActivity extends AppCompatActivity {
 
     ProgressBar progressbar;
     TextView tvCount;
-    ListView found_list;
-    Button show_more;
-    Button previous;
-
     String API_BASE_URL = "http://openlibrary.org/";
     String SEARCH_URL = "search.json?q=";
     String page = "&page=";
     String query;
     int count;
-
     Context context;
     ArrayList<Book> books;
-    String number_found;
+    String numberFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,100 +45,28 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         initializeViews();
 
-        // get searchrequest
-        Bundle extras = getIntent().getExtras();
-        query = extras.getString("query", "");
-
-        // set views
-        progressbar.setVisibility(ProgressBar.VISIBLE);
-        String message = "Searching for" + query;
-        tvCount.setText(message);
-        tvCount.setVisibility(TextView.INVISIBLE);
-
-        // search
-        String searchRequest = API_BASE_URL + SEARCH_URL + query + page + String.valueOf(count);
-        RetrieveBooks retrieveBooks = new RetrieveBooks();
-        retrieveBooks.execute(searchRequest);
+        // get query and search
+        query = getIntent().getExtras().getString("query", "");
+        search(API_BASE_URL + SEARCH_URL + query + page + String.valueOf(count));
     }
 
     public void initializeViews(){
+        String message = "Searching for" + query;
         tvCount = (TextView) findViewById(R.id.tvCount);
-        progressbar = (ProgressBar) findViewById(R.id.progressbar);
-        show_more = (Button) findViewById(R.id.show_more);
-        previous = (Button) findViewById(R.id.previous);
-        progressbar.setVisibility(ProgressBar.VISIBLE);
-    }
-
-    public void show_list(ArrayList<Book> books, String number) {
-
-        // set views
-        progressbar.setVisibility(ProgressBar.INVISIBLE);
-        String message = number + " books found!";
         tvCount.setText(message);
-        tvCount.setVisibility(TextView.VISIBLE);
-        if (books.size() == 100) {
-            show_more.setVisibility(Button.VISIBLE);
-        }
-        if (count > 1){
-            previous.setVisibility(Button.VISIBLE);
-        }
-
-        // set list adapter
-        found_list = (ListView) findViewById(R.id.found_list);
-        BookAdapter bookAdapter = new BookAdapter(this, books);
-        found_list.setAdapter(bookAdapter);
-
-        // decide what clicking a book does
-        found_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Book this_book = (Book) parent.getAdapter().getItem(position);
-                String book_id = this_book.getId();
-                String book_title = this_book.getTitle();
-                String book_author = this_book.getAuthor();
-                show_details(book_id, book_title, book_author);
-
-            }
-        });
-
-        // decide what the next button does
-        show_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                other_results(count+=1);
-            }
-        });
-
-        // decide what the previous button does
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                other_results(count-=1);
-            }
-        });
-    }
-
-    // go to detail activity
-    public void show_details(String id, String title, String author) {
-        Intent intent = new Intent(this, BookDetailActivity.class);
-        Bundle extras = new Bundle();
-        extras.putString("id", id);
-        extras.putString("title", title);
-        extras.putString("author", author);
-        intent.putExtras(extras);
-        startActivity(intent);
-
-    }
-
-    // get results on other page
-    public void other_results(int count){
+        progressbar = (ProgressBar) findViewById(R.id.progressbar);
         progressbar.setVisibility(ProgressBar.VISIBLE);
-        String searchRequest = API_BASE_URL + SEARCH_URL + query + page + String.valueOf(count);
+
+    }
+
+    public void search(String searchRequest){
         RetrieveBooks retrieveBooks = new RetrieveBooks();
         retrieveBooks.execute(searchRequest);
     }
 
-    // retrieve info from API
+    /**
+     * API request for list of books.
+     **/
     public class RetrieveBooks extends AsyncTask<String, Void, String> {
 
         // doInBackground
@@ -170,13 +94,80 @@ public class SearchResultsActivity extends AppCompatActivity {
                             books.add(book);
                         }
                     }
-                    number_found = data.getString("num_found");
+                    numberFound = data.getString("num_found");
                 } catch(JSONException e) {
                     e.printStackTrace();
                 }
-                show_list(books, number_found);
+                // convert results to ListView
+                showList(books, numberFound);
             }
         }
 
     }
+
+    public void showList(ArrayList<Book> books, String number) {
+
+        // update layout views
+        Button next = (Button) findViewById(R.id.next);
+        Button previous = (Button) findViewById(R.id.previous);
+        progressbar.setVisibility(ProgressBar.INVISIBLE);
+        ListView listFound = (ListView) findViewById(R.id.found_list);
+        String message = number + " books found!";
+        tvCount.setText(message);
+        if (books.size() == 100) {
+            next.setVisibility(Button.VISIBLE);
+        }
+        if (count > 1){
+            previous.setVisibility(Button.VISIBLE);
+        }
+
+        // set list adapter
+        BookAdapter bookAdapter = new BookAdapter(this, books);
+        listFound.setAdapter(bookAdapter);
+
+        // decide what clicking a book does
+        listFound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long i) {
+                Book book = (Book) parent.getAdapter().getItem(position);
+                String id = book.getId();
+                String title = book.getTitle();
+                String author = book.getAuthor();
+                goToDetails(id, title, author);
+            }
+        });
+
+        // decide what the next button does
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchPage(count+=1);
+            }
+        });
+
+        // decide what the previous button does
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchPage(count-=1);
+            }
+        });
+    }
+
+    // get results on other page
+    public void switchPage(int count){
+        progressbar.setVisibility(ProgressBar.VISIBLE);
+        search(API_BASE_URL + SEARCH_URL + query + page + String.valueOf(count));
+    }
+
+    public void goToDetails(String id, String title, String author) {
+        Intent intent = new Intent(this, BookDetailActivity.class);
+        Bundle extras = new Bundle();
+        extras.putString("id", id);
+        extras.putString("title", title);
+        extras.putString("author", author);
+        intent.putExtras(extras);
+        startActivity(intent);
+    }
+
 }
