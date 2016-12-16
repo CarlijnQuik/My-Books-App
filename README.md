@@ -25,4 +25,5 @@ I do not owe the rights of the images and they can all be found with Google Imag
 
 My phone decided to stop taking screenshots, so here are pictures of my phone with the LogInActivity and BooksActivity;
 
- carlijnquik-pset6/doc/IMG_0236.JPG 
+https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/master/doc/IMG_0237.JPG
+https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/master/doc/IMG_0236.JPG
