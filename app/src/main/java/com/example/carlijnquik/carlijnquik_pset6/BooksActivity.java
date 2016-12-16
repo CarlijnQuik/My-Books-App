@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,6 +38,7 @@ public class BooksActivity extends AppCompatActivity {
     ImageButton ibSearch;
     ImageButton ibLogOut;
     ListView listOfBooks;
+    TextView tvInstruction;
 
     ArrayList<Book> books;
     Book this_book;
@@ -52,6 +54,7 @@ public class BooksActivity extends AppCompatActivity {
         books = new ArrayList<>();
 
         initializeViews();
+        setInstruction();
         initializeFirebase();
         setAdapter();
         setListeners();
@@ -62,6 +65,7 @@ public class BooksActivity extends AppCompatActivity {
      **/
     public void initializeViews(){
         listOfBooks = (ListView) findViewById(R.id.my_books);
+        tvInstruction = (TextView) findViewById(R.id.tvInstruction);
 
         // menu buttons
         ibHome = (ImageButton) findViewById(R.id.ibHome);
@@ -69,6 +73,14 @@ public class BooksActivity extends AppCompatActivity {
         ibLogOut = (ImageButton) findViewById(R.id.ibLogOut);
         ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
         ibMyBooks.setImageResource(R.drawable.this_act);
+    }
+    public void setInstruction(){
+        if(books.isEmpty()){
+            tvInstruction.setText(R.string.empty_list);
+        }
+        else{
+            tvInstruction.setText(R.string.delete_instruction);
+        }
     }
 
     public void initializeFirebase(){
@@ -95,6 +107,7 @@ public class BooksActivity extends AppCompatActivity {
                 Book book = dataSnapshot.getValue(Book.class);
                 books.add(book);
                 bookAdapter.notifyDataSetChanged();
+                setInstruction();
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
@@ -133,6 +146,7 @@ public class BooksActivity extends AppCompatActivity {
                                 dataRef.child("Users").child(user.getUid()).child("Books").child(this_book.firebasekey).removeValue();
                                 books.remove(this_book);
                                 bookAdapter.notifyDataSetChanged();
+                                setInstruction();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 //No button_custom clicked

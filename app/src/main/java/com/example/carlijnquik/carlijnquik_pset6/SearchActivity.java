@@ -12,27 +12,37 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Activity that enables the user to enter a search request.
+ */
+
 public class SearchActivity extends AppCompatActivity {
 
     ImageButton ibHome;
     ImageButton ibMyBooks;
     ImageButton ibSearch;
     ImageButton ibLogOut;
-    EditText etSearch_request;
     ImageButton ibRequest;
+    EditText etSearch_request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // views
+        initializeViews();
+        setListeners();
+
+    }
+
+    public void initializeViews(){
         ibHome = (ImageButton) findViewById(R.id.ibHome);
         ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
         ibLogOut = (ImageButton) findViewById(R.id.ibLogOut);
         ibSearch = (ImageButton) findViewById(R.id.ibSearch);
         ibRequest = (ImageButton) findViewById(R.id.ibRequest);
         etSearch_request = (EditText) findViewById(R.id.etSearch_request);
+        ibSearch.setImageResource(R.drawable.this_act);
 
         // set EditText to empty
         etSearch_request.setText("");
@@ -48,37 +58,35 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
 
-        // menu buttons
-        ibSearch.setImageResource(R.drawable.this_act);
+    public void setListeners(){
         ibHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Home_Clicked();
+                homeClicked();
             }
         });
         ibMyBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                My_Books_Clicked();
+                myBooksClicked();
             }
         });
         ibLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log_Out_Clicked();
+                logOutClicked();
             }
         });
-
     }
 
     /**
-     * Keeps user's last search when they come back to SearchActivity
+     * Keeps user's last search when they come back to SearchActivity.
      **/
     @Override
     protected void onResume() {
         super.onResume();
-
 
     }
 
@@ -99,16 +107,15 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    // menu buttons
-    public void My_Books_Clicked(){
+    public void myBooksClicked(){
         Intent goToBooks = new Intent(this, BooksActivity.class);
         startActivity(goToBooks);
     }
-    public void Home_Clicked(){
+    public void homeClicked(){
         Intent goToHome = new Intent(this, HomeActivity.class);
         startActivity(goToHome);
     }
-    public void Log_Out_Clicked(){
+    public void logOutClicked(){
         Intent goToLogOut = new Intent(this, LogOutActivity.class);
         startActivity(goToLogOut);
     }

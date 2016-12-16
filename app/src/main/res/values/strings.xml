@@ -45,6 +45,7 @@
 
     <string name="my_list_of_books">My List Of Books</string>
     <string name="delete_instruction">Hold a book to remove it</string>
+    <string name="empty_list">Your list is empty</string>
 
     <string name="log_out_question">Are you sure you want to log out?</string>
 

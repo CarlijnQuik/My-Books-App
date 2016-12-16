@@ -7,25 +7,25 @@
     android:weightSum="4">
 
     <TextView
-            android:text="@string/welcome"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvWelcome"
+        android:text="@string/welcome"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvWelcome"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="32dp" />
 
     <TextView
-            android:id="@+id/status"
-            android:visibility="invisible"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/signed_out"
+        android:id="@+id/status"
+        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/signed_out"
         android:layout_alignTop="@+id/tvWelcome"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="37dp" />

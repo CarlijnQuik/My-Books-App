@@ -47,11 +47,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         // set counter to page 1
         count = 1;
 
-        // views
-        tvCount = (TextView) findViewById(R.id.tvCount);
-        progressbar = (ProgressBar) findViewById(R.id.progressbar);
-        show_more = (Button) findViewById(R.id.show_more);
-        previous = (Button) findViewById(R.id.previous);
+        initializeViews();
 
         // get searchrequest
         Bundle extras = getIntent().getExtras();
@@ -67,6 +63,14 @@ public class SearchResultsActivity extends AppCompatActivity {
         String searchRequest = API_BASE_URL + SEARCH_URL + query + page + String.valueOf(count);
         RetrieveBooks retrieveBooks = new RetrieveBooks();
         retrieveBooks.execute(searchRequest);
+    }
+
+    public void initializeViews(){
+        tvCount = (TextView) findViewById(R.id.tvCount);
+        progressbar = (ProgressBar) findViewById(R.id.progressbar);
+        show_more = (Button) findViewById(R.id.show_more);
+        previous = (Button) findViewById(R.id.previous);
+        progressbar.setVisibility(ProgressBar.VISIBLE);
     }
 
     public void show_list(ArrayList<Book> books, String number) {

@@ -1,10 +1,6 @@
 package com.example.carlijnquik.carlijnquik_pset6;
 
 /**
- * Source: https://github.com/firebase/quickstart-android/tree/master/auth/app/src/main
- *
- * Controls the log in activity so multiple users can use the app.
- *
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +20,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,6 +31,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Source: https://github.com/firebase/quickstart-android/tree/master/auth/app/src/main.
+ * Controls the log in activity so multiple users can use the app.
+ * Edited by Carlijn Quik in december 2016.
+ */
+
 public class LogInActivity extends LogInProgressDialog implements
         View.OnClickListener {
 
@@ -45,59 +46,40 @@ public class LogInActivity extends LogInProgressDialog implements
     private EditText mEmailField;
     private EditText mPasswordField;
 
-    // [START declare_auth]
     private FirebaseAuth mAuth;
-    // [END declare_auth]
-
-    // [START declare_auth_listener]
     private FirebaseAuth.AuthStateListener mAuthListener;
-    // [END declare_auth_listener]
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        // Views
-        mStatusTextView = (TextView) findViewById(R.id.status);
-        mEmailField = (EditText) findViewById(R.id.field_email);
-        mPasswordField = (EditText) findViewById(R.id.field_password);
+        initalizeFirebase();
+        initializeViews();
+        setListeners();
 
-        // Buttons
-        findViewById(R.id.bLogIn).setOnClickListener(this);
-        findViewById(R.id.bCreateAccount).setOnClickListener(this);
+    }
 
-        // [START initialize_auth]
+    public void initalizeFirebase(){
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
-
-        // [START auth_state_listener]
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is logged in
-                    forward_existing_user();
-                    Log.d(TAG, "onAuthStateChanged:logged_in:" + user.getUid());
-                } else {
-                    // User is logged out
-                    Log.d(TAG, "onAuthStateChanged:logged_out");
+                    forwardExistingUser();
                 }
             }
         };
-        // [END auth_state_listener]
     }
 
-    // [START on_start_add_listener]
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
-    // [END on_start_add_listener]
 
-    // [START on_stop_remove_listener]
     @Override
     public void onStop() {
         super.onStop();
@@ -105,10 +87,29 @@ public class LogInActivity extends LogInProgressDialog implements
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-    // [END on_stop_remove_listener]
+
+    public void initializeViews(){
+        mStatusTextView = (TextView) findViewById(R.id.status);
+        mEmailField = (EditText) findViewById(R.id.field_email);
+        mPasswordField = (EditText) findViewById(R.id.field_password);
+    }
+
+    public void setListeners(){
+        findViewById(R.id.bLogIn).setOnClickListener(this);
+        findViewById(R.id.bCreateAccount).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.bCreateAccount) {
+            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+        } else if (i == R.id.bLogIn) {
+            logIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+        }
+    }
 
     private void createAccount(String email, String password) {
-        Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
         }
@@ -120,36 +121,18 @@ public class LogInActivity extends LogInProgressDialog implements
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
+                        // If sign in fails, display a message, if sign in succeeds notify auth state listener
                         if (!task.isSuccessful()) {
                             Toast.makeText(LogInActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         } else if (task.isSuccessful()) {
-                            forward_new_user();
+                            forwardNewUser();
                         }
 
-                        // [START_EXCLUDE]
                         hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END create_user_with_email]
-    }
-
-    public void forward_new_user() {
-        Intent intent = new Intent(this, NewUserActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    public void forward_existing_user() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     private void logIn(String email, String password) {
@@ -164,27 +147,18 @@ public class LogInActivity extends LogInProgressDialog implements
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "logInWithEmail:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
+                        // If sign in fails, display a message, if sign in succeeds notify auth state listener
                         if (!task.isSuccessful()) {
                             Toast.makeText(LogInActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
-                        }
-
-                        // [START_EXCLUDE]
-                        if (!task.isSuccessful()) {
                             mStatusTextView.setText(R.string.auth_failed);
                         } else if (task.isSuccessful()) {
-                            forward_existing_user();
+                            forwardExistingUser();
                         }
+
                         hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END log_in_with_email]
     }
 
     private boolean validateForm() {
@@ -209,14 +183,16 @@ public class LogInActivity extends LogInProgressDialog implements
         return valid;
     }
 
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.bCreateAccount) {
-            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        } else if (i == R.id.bLogIn) {
-            logIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        }
+    public void forwardNewUser() {
+        Intent intent = new Intent(this, NewUserActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void forwardExistingUser() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }
