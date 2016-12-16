@@ -20,14 +20,14 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:text="Welcome to the MyBooks App!"
-        android:elevation="5dp"
+        android:text="@string/welcome"
         android:textColor="@android:color/black"
         android:id="@+id/textView" />
 
     <ImageButton
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:contentDescription="@string/contentdescription"
         app:srcCompat="@drawable/go"
         android:scaleType="fitCenter"
         android:id="@+id/go"
@@ -63,9 +63,6 @@
             android:id="@+id/potter"
             android:textSize="15sp"
             android:onClick="onRadioButtonClicked"
-            android:layout_below="@+id/name_input"
-            android:layout_alignLeft="@+id/name_input"
-            android:layout_alignStart="@+id/name_input"
             android:layout_marginTop="22dp" />
 
         <RadioButton
@@ -74,10 +71,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/benjamin"
             android:textSize="15sp"
-            android:onClick="onRadioButtonClicked"
-            android:layout_below="@+id/female"
-            android:layout_alignLeft="@+id/female"
-            android:layout_alignStart="@+id/female" />
+            android:onClick="onRadioButtonClicked" />
 
         <RadioButton
             android:text="@string/option3"
@@ -85,10 +79,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:id="@+id/tiger"
-            android:onClick="onRadioButtonClicked"
-            android:layout_below="@+id/other"
-            android:layout_alignLeft="@+id/other"
-            android:layout_alignStart="@+id/other" />
+            android:onClick="onRadioButtonClicked" />
     </RadioGroup>
 
 </RelativeLayout>

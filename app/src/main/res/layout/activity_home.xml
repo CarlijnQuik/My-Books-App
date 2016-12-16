@@ -23,8 +23,7 @@
         android:id="@+id/menu_title"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColor="@android:color/black"
-        android:elevation="6dp" />
+        android:textColor="@android:color/black" />
 
     <include android:id="@+id/menu" layout="@layout/menu_layout" />
 

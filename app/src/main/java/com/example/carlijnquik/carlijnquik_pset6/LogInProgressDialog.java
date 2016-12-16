@@ -4,6 +4,11 @@ import android.app.ProgressDialog;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 
+/**
+ * Controls the progress dialog in the log in activity.
+ * Source: https://github.com/firebase/quickstart-android/tree/master/auth/app/src/main.
+ **/
+
 public class LogInProgressDialog extends AppCompatActivity {
 
     @VisibleForTesting

@@ -28,10 +28,23 @@
     <string name="my_books">My Books</string>
     <string name="log_out">Log Out</string>
 
+    <string name="search_instruction">Search by title, author or ISBN</string>
+
+    <string name="button_next">Next</string>
+    <string name="button_previous">Previous</string>
+
+    <string name="title_availability">Title not available</string>
+    <string name="author_availability">Author not available</string>
+    <string name="by">by</string>
+
     <string name="published_by">Published By</string>
     <string name="description">Description</string>
+    <string name="add">Add book</string>
+
+    <string name="contentdescription">Image Display</string>
 
     <string name="my_list_of_books">My List Of Books</string>
+    <string name="delete_instruction">Hold a book to remove it</string>
 
     <string name="log_out_question">Are you sure you want to log out?</string>
 

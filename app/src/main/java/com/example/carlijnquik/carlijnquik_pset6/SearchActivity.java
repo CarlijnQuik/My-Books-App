@@ -72,6 +72,16 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Keeps user's last search when they come back to SearchActivity
+     **/
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
+
     public void Search(View view) {
         // get search request
         String tag = etSearch_request.getText().toString();

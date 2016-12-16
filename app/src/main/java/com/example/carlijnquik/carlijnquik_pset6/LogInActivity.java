@@ -1,6 +1,10 @@
 package com.example.carlijnquik.carlijnquik_pset6;
 
 /**
+ * Source: https://github.com/firebase/quickstart-android/tree/master/auth/app/src/main
+ *
+ * Controls the log in activity so multiple users can use the app.
+ *
  * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -214,4 +218,5 @@ public class LogInActivity extends LogInProgressDialog implements
             logIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }
     }
+
 }

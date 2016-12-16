@@ -2,7 +2,6 @@ package com.example.carlijnquik.carlijnquik_pset6;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,21 +21,28 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
+/**
+ * Activity that shows the list of books the user has compiled.
+ */
 
 public class BooksActivity extends AppCompatActivity {
 
-    public FirebaseDatabase database;
-    public DatabaseReference dataRef;
-    ListView myBooks;
-    ArrayList<Book> books;
+    FirebaseDatabase database;
+    DatabaseReference dataRef;
+    FirebaseAuth mAuth;
+    FirebaseUser user;
+
     ImageButton ibHome;
     ImageButton ibMyBooks;
     ImageButton ibSearch;
     ImageButton ibLogOut;
-    private FirebaseAuth mAuth;
-    FirebaseUser user;
+    ListView listOfBooks;
+
+    ArrayList<Book> books;
     Book this_book;
     AlertDialog.Builder builder;
+    BookAdapter bookAdapter;
+    Query myBooksQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,45 +51,44 @@ public class BooksActivity extends AppCompatActivity {
 
         books = new ArrayList<>();
 
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        initializeViews();
+        initializeFirebase();
+        setAdapter();
+        setListeners();
+    }
 
-        database = FirebaseDatabase.getInstance();
-        dataRef = database.getReference();
-        ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
-        ibMyBooks.setImageResource(R.drawable.this_act);
+    /**
+     * Initializes views in the layout.
+     **/
+    public void initializeViews(){
+        listOfBooks = (ListView) findViewById(R.id.my_books);
 
-        myBooks = (ListView) findViewById(R.id.my_books);
-        final BookAdapter bookAdapter = new BookAdapter(this, books);
-        myBooks.setAdapter(bookAdapter);
-
-        // views
+        // menu buttons
         ibHome = (ImageButton) findViewById(R.id.ibHome);
         ibSearch = (ImageButton) findViewById(R.id.ibSearch);
         ibLogOut = (ImageButton) findViewById(R.id.ibLogOut);
+        ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);
+        ibMyBooks.setImageResource(R.drawable.this_act);
+    }
 
+    public void initializeFirebase(){
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        dataRef = database.getReference();
+        myBooksQuery = dataRef.child("Users").child(user.getUid()).child("Books").orderByKey();
+    }
 
-        ibHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Home_Clicked();
-            }
-        });
-        ibSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Search_Clicked();
-            }
-        });
-        ibLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log_Out_Clicked();
-            }
-        });
+    /**
+     * Set the listadapter.
+     **/
+    public void setAdapter(){
+        bookAdapter = new BookAdapter(this, books);
+        listOfBooks.setAdapter(bookAdapter);
+    }
 
-        Query myBooksQuery = dataRef.child("Users").child(user.getUid()).child("Books").orderByKey();
-
+    public void setListeners(){
+        // firebase database and adapter
         myBooksQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
@@ -91,51 +96,33 @@ public class BooksActivity extends AppCompatActivity {
                 books.add(book);
                 bookAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                Book newBook = dataSnapshot.getValue(Book.class);
-                String commentkey = dataSnapshot.getKey();
             }
-
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                String commentKey = dataSnapshot.getKey();
             }
-
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName){
-                Book movedBook = dataSnapshot.getValue(Book.class);
-                String commentkey = dataSnapshot.getKey();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
-
-
-
-
         });
 
-        myBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // list of books in adapter
+        listOfBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Book this_book = (Book) parent.getAdapter().getItem(position);
-                String book_id = this_book.getId();
-                String book_title = this_book.getTitle();
-                String book_author = this_book.getAuthor();
-                show_details(book_id, book_title, book_author);
+                this_book = (Book) parent.getAdapter().getItem(position);
+                getBookDetails();
             }
         });
 
         builder = new AlertDialog.Builder(this);
-
-        myBooks.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listOfBooks.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                // ask user whether the input is correct
                 this_book = (Book) parent.getAdapter().getItem(position);
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override
@@ -147,7 +134,6 @@ public class BooksActivity extends AppCompatActivity {
                                 books.remove(this_book);
                                 bookAdapter.notifyDataSetChanged();
                                 break;
-
                             case DialogInterface.BUTTON_NEGATIVE:
                                 //No button_custom clicked
                                 break;
@@ -156,15 +142,41 @@ public class BooksActivity extends AppCompatActivity {
                 };
                 builder.setMessage("Are you sure you want to delete this book?").setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
-
-
                 return true;
             }
         });
 
+        // menu
+        ibHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homeClicked();
+            }
+        });
+        ibSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchClicked();
+            }
+        });
+        ibLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logOutClicked();
+            }
+        });
     }
 
-    public void show_details(String id, String title, String author) {
+    /**
+     * Initialize click.
+     **/
+    public void getBookDetails(){
+        String book_id = this_book.getId();
+        String book_title = this_book.getTitle();
+        String book_author = this_book.getAuthor();
+        goToDetails(book_id, book_title, book_author);
+    }
+    public void goToDetails(String id, String title, String author) {
         Intent intent = new Intent(this, BookDetailActivity.class);
         Bundle extras = new Bundle();
         extras.putString("id", id);
@@ -174,15 +186,18 @@ public class BooksActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void Home_Clicked(){
+    /**
+     * Initialize menu.
+     **/
+    public void homeClicked(){
         Intent goToSearch = new Intent(this, HomeActivity.class);
         startActivity(goToSearch);
     }
-    public void Search_Clicked(){
+    public void searchClicked(){
         Intent goToSearch = new Intent(this, SearchActivity.class);
         startActivity(goToSearch);
     }
-    public void Log_Out_Clicked(){
+    public void logOutClicked(){
         Intent goToUser = new Intent(this, LogOutActivity.class);
         startActivity(goToUser);
     }

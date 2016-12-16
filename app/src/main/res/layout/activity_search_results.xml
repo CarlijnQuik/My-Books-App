@@ -22,45 +22,53 @@
         android:layout_alignParentStart="true">
 
         <Button
-            android:text="Previous"
+            android:text="@string/button_previous"
             android:background="@drawable/background"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_gravity="left"
             android:visibility="gone"
             android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginRight="100dp"
+            android:layout_marginEnd="100dp"
             app:srcCompat="@drawable/background"
             android:id="@+id/previous" />
 
         <Button
-            android:text="Next"
+            android:text="@string/button_next"
             android:layout_width="100dp"
-            android:layout_gravity="right"
             android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_height="50dp"
             android:id="@+id/show_more"
             android:visibility="gone"
-            android:background="@drawable/background"
-            android:layout_alignTop="@+id/previous"
-            android:layout_alignRight="@+id/tvCount"
-            android:layout_alignEnd="@+id/tvCount" />
+            android:background="@drawable/background" />
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
+
+        <TextView
+            android:textColor="@android:color/black"
+            android:visibility="invisible"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvCount"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
         <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/progressbar"
-            android:elevation="5dp"
             android:visibility="invisible"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="61dp" />
@@ -69,21 +77,10 @@
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:id="@+id/found_list"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@+id/progressbar"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
     </RelativeLayout>
-
-    <TextView
-        android:textColor="@android:color/black"
-        android:visibility="invisible"
-        android:textSize="25sp"
-        android:gravity="center"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvCount"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

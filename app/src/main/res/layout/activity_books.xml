@@ -23,10 +23,7 @@
         android:id="@+id/books_title"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColor="@android:color/black"
-        android:elevation="5dp" />
-
-    <include android:id="@+id/menu" layout="@layout/menu_layout" />
+        android:textColor="@android:color/black" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -44,5 +41,15 @@
             android:layout_alignParentStart="true"
             android:layout_marginTop="66dp" />
     </RelativeLayout>
+
+    <include android:id="@+id/menu" layout="@layout/menu_layout" />
+
+    <TextView
+        android:text="@string/delete_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/books_title"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView2" />
 
 </RelativeLayout>
