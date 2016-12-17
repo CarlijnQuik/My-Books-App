@@ -47,7 +47,7 @@ public class BooksActivity extends AppCompatActivity {
         // initialize firebase
         user = FirebaseAuth.getInstance().getCurrentUser();
         dataRef = FirebaseDatabase.getInstance().getReference();
-        myBooksQuery = dataRef.child("Users").child(user.getUid()).child("Books").orderByKey();
+        myBooksQuery = dataRef.child("Users").child(user.getUid()).child("Books");
 
         // set the list adapter
         listOfBooks = (ListView) findViewById(R.id.my_books);
@@ -116,7 +116,7 @@ public class BooksActivity extends AppCompatActivity {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
                                 //Yes button_custom clicked
-                                dataRef.child("Users").child(user.getUid()).child("Books").child(book.firebasekey).removeValue();
+                                dataRef.child("Users").child(user.getUid()).child("Books").child(book.id).removeValue();
                                 books.remove(book);
                                 bookAdapter.notifyDataSetChanged();
                                 setInstruction();

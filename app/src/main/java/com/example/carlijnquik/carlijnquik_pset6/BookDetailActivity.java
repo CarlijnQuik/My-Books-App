@@ -207,8 +207,7 @@ public class BookDetailActivity extends AppCompatActivity {
                 book.id = id;
                 book.title = title;
                 book.author = author;
-                book.firebasekey = dataRef.child("Books").push().getKey();
-                dataRef.child("Users").child(user.getUid()).child("Books").child(book.firebasekey).setValue(book);
+                dataRef.child("Users").child(user.getUid()).child("Books").child(book.id).setValue(book);
 
                 // notify user
                 Toast.makeText(getApplicationContext(), "Book added to list!", Toast.LENGTH_SHORT).show();
