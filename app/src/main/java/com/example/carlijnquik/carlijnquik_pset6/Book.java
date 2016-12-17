@@ -14,7 +14,6 @@ public class Book implements Serializable {
     public String id = null;
     public String title = null;
     public String author = null;
-    public String firebasekey = null;
 
     public String getId() {
 

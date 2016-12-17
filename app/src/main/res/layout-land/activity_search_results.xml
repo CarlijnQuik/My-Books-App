@@ -53,17 +53,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <TextView
-            android:textColor="@android:color/black"
-            android:visibility="invisible"
-            android:textSize="25sp"
-            android:gravity="center"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvCount"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-
         <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
@@ -75,11 +64,22 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="210dp"
             android:id="@+id/found_list"
             android:layout_alignTop="@+id/progressbar"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+
+        <TextView
+            android:textColor="@android:color/black"
+            android:visibility="invisible"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvCount"
+            android:layout_above="@+id/found_list"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

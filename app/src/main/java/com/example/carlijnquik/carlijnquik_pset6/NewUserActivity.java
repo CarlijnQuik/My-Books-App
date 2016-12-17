@@ -72,8 +72,7 @@ public class NewUserActivity extends AppCompatActivity {
     public void Go(View view) {
 
             // add chosen book to database
-            book.firebasekey = dataRef.child("Users").child(user.getUid()).child("Books").push().getKey();
-            dataRef.child("Users").child(user.getUid()).child("Books").child(book.firebasekey).setValue(book);
+            dataRef.child("Users").child(user.getUid()).child("Books").child(book.id).setValue(book);
 
             // ask user whether the input is correct
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
