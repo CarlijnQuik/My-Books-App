@@ -5,9 +5,8 @@ Pset6 Minor Programming University of Amsterdam
 - Description: In this app you can look up books and create a list of books to read.
 
 Choices in technicalities;
-- Kept elevation for devices with API level 21 and higher.
 - Chose to edit the layouts myself instead of looking for themes etc.
-- Chose to create a custom menu instead of using for instance a different type of activity with a menu button. This is because in the previous psets those activities were not used. When creating the next App, I will consider using a different type of menu.
+- Chose to create a custom menu instead of using for instance a different type of activity with a menu button. This is because in the previous psets those activities were not used. When creating the next App, I will consider using a different type of menu. This might also be better to avoid having to use fragments.
 
 For signing in, the Firebase QuickStart example is used with a bit of editing as well as the documentation on this topic.
 - https://github.com/firebase/quickstart-android
@@ -23,3 +22,8 @@ Image sources;
 I do not owe the rights of the images and they can all be found with Google Image Search for the original sources. Examples;
 - http://www.clipartpanda.com/clipart_images/books-for-clip-art-9-743319
 - http://www.solidbackgrounds.com/1920x1080-white-solid-color-background.html
+
+My phone decided to stop taking screenshots, so here are pictures of my phone with the LogInActivity and BooksActivity;
+
+- https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/master/doc/IMG_0237.JPG
+- https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/master/doc/IMG_0236.JPG
