@@ -23,7 +23,8 @@ I do not owe the rights of the images and they can all be found with Google Imag
 - http://www.clipartpanda.com/clipart_images/books-for-clip-art-9-743319
 - http://www.solidbackgrounds.com/1920x1080-white-solid-color-background.html
 
-My phone decided to stop taking screenshots, so here are pictures of my phone with the LogInActivity and BooksActivity;
+These are screenshots of the log in, search results and books activity;
 
-- https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/master/doc/IMG_0237.JPG
-- https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/master/doc/IMG_0236.JPG
+https://github.com/carlijnq/carlijnquik-pset6/blob/master/doc/Screenshot_2016-12-17-21-31-47.png?raw=true
+https://github.com/carlijnq/carlijnquik-pset6/blob/master/doc/Screenshot_2016-12-17-21-31-47.png?raw=true
+https://github.com/carlijnq/carlijnquik-pset6/blob/master/doc/Screenshot_2016-12-17-21-33-21.png?raw=true
