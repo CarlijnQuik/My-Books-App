@@ -25,6 +25,6 @@ I do not owe the rights of the images and they can all be found with Google Imag
 
 These are screenshots of the log in, search results and books activity;
 
-https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-31-47.png
-https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-33-01.png
-https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-33-21.png
+- https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-31-47.png
+- https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-33-01.png
+- https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-33-21.png
