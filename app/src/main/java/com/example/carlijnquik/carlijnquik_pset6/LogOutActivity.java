@@ -9,13 +9,12 @@ import android.widget.Button;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
- * Enables user to log out.
- * Source used: https://github.com/firebase/quickstart-android/tree/master/auth/app/src/main.
+ * Enables user to log out
+ * Source used: https://github.com/firebase/quickstart-android/tree/master/auth/app/src/main
  **/
 
 public class LogOutActivity extends AppCompatActivity {
 
-    Button logOut;
     FirebaseAuth mAuth;
 
     @Override
@@ -27,19 +26,20 @@ public class LogOutActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // initialize listener
-        logOut = (Button) findViewById(R.id.log_out_button);
-        logOut.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.bLogOut).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signOut();
             }
         });
+
     }
 
     private void signOut() {
         mAuth.signOut();
         Intent intent = new Intent(this, LogInActivity.class);
         startActivity(intent);
+
     }
 
 }

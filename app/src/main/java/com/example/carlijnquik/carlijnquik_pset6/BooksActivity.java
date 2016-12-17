@@ -23,19 +23,19 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 
 /**
- * Activity that shows the list of books the user has compiled.
+ * Activity that shows the list of books the user has compiled
  */
 
 public class BooksActivity extends AppCompatActivity {
 
-    DatabaseReference dataRef;
     FirebaseUser user;
+    DatabaseReference database;
+
     ListView listOfBooks;
     ArrayList<Book> books;
     Book book;
-    AlertDialog.Builder builder;
     BookAdapter bookAdapter;
-    Query myBooksQuery;
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +46,7 @@ public class BooksActivity extends AppCompatActivity {
 
         // initialize firebase
         user = FirebaseAuth.getInstance().getCurrentUser();
-        dataRef = FirebaseDatabase.getInstance().getReference();
-        myBooksQuery = dataRef.child("Users").child(user.getUid()).child("Books");
+        database = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
 
         // set the list adapter
         listOfBooks = (ListView) findViewById(R.id.my_books);
@@ -62,17 +61,19 @@ public class BooksActivity extends AppCompatActivity {
 
     public void setInstruction(){
         TextView tvInstruction = (TextView) findViewById(R.id.tvInstruction);
+
         if(books.isEmpty()){
             tvInstruction.setText(R.string.empty_list);
         }
         else{
             tvInstruction.setText(R.string.delete_instruction);
         }
+
     }
 
     public void setListeners(){
         // firebase database and adapter
-        myBooksQuery.addChildEventListener(new ChildEventListener() {
+        database.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Book book = dataSnapshot.getValue(Book.class);
@@ -110,25 +111,28 @@ public class BooksActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 book = (Book) parent.getAdapter().getItem(position);
+
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
-                                //Yes button_custom clicked
-                                dataRef.child("Users").child(user.getUid()).child("Books").child(book.id).removeValue();
+                                // yes button clicked
+                                database.child(book.id).removeValue();
                                 books.remove(book);
                                 bookAdapter.notifyDataSetChanged();
                                 setInstruction();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
-                                //No button_custom clicked
+                                // no button clicked
                                 break;
                         }
                     }
                 };
+
                 builder.setMessage("Are you sure you want to delete this book?").setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
+
                 return true;
             }
         });
@@ -139,6 +143,7 @@ public class BooksActivity extends AppCompatActivity {
         String id = book.getId();
         String title = book.getTitle();
         String author = book.getAuthor();
+
         Intent intent = new Intent(this, BookDetailActivity.class);
         Bundle extras = new Bundle();
         extras.putString("id", id);
@@ -146,13 +151,13 @@ public class BooksActivity extends AppCompatActivity {
         extras.putString("author", author);
         intent.putExtras(extras);
         startActivity(intent);
+
     }
 
     /**
-     * Initialize menu.
+     * Initialize menu
      **/
     public void setMenu(){
-
         ImageButton ibMyBooks = (ImageButton) findViewById(R.id.ibMyBooks);;
         ibMyBooks.setImageResource(R.drawable.this_act);
 

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Activity that enables the user to enter a search request.
+ * Activity that enables the user to enter a search request
  */
 
 public class SearchActivity extends AppCompatActivity {
@@ -57,17 +57,15 @@ public class SearchActivity extends AppCompatActivity {
             startActivity(goToSearchResults);
         }
         else{
-            Toast toast = Toast.makeText(this, "Please enter a searchrequest", Toast.LENGTH_SHORT);
-            toast.show();
+            Toast.makeText(this, "Please enter a search request", Toast.LENGTH_SHORT).show();
         }
 
     }
 
     /**
-     * Initialize menu.
+     * Initialize menu
      **/
     public void setMenu(){
-
         ImageButton ibSearch = (ImageButton) findViewById(R.id.ibSearch);
         ibSearch.setImageResource(R.drawable.this_act);
 

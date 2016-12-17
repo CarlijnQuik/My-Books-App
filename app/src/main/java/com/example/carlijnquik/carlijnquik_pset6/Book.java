@@ -11,34 +11,35 @@ import java.io.Serializable;
  */
 
 public class Book implements Serializable {
+
     public String id = null;
     public String title = null;
     public String author = null;
 
     public String getId() {
-
         return this.id;
     }
 
     public String getTitle() {
-
         return this.title;
     }
 
     public String getAuthor() {
-
         return this.author;
     }
 
     public String getCoverUrl() {
         return "http://covers.openlibrary.org/b/olid/" + id + "-M.jpg?default=false";
+
     }
 
     /**
-     * Obtain data from JSON Object and add to book where possible.
+     * Obtain data from JSON Object and add to book where possible
      **/
     public static Book fromJson(JSONObject jsonObject) {
+
         Book book = new Book();
+
         try {
             if (jsonObject.has("cover_edition_key")) {
                 book.id = jsonObject.getString("cover_edition_key");
@@ -68,6 +69,7 @@ public class Book implements Serializable {
         }
 
         return book;
+
     }
 
 }

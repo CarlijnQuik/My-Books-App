@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Retrieves string of data from the URL requested.
+ * Retrieves string of data from the URL requested
  **/
 
 public class HttpRequestHelper {
@@ -28,15 +28,18 @@ public class HttpRequestHelper {
             if(200 <= responsecode && responsecode <= 299){
                 BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                 String line;
+
                 while((line = br.readLine())!= null){
                     result += line;
                 }
             }
+
         }catch(Exception e){
             Log.e("Connection failed",e.getMessage(),e);
         }
 
         return result;
+
     }
 
 }

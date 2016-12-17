@@ -24,7 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Activity that shows the details of a book and enables the user to add it to his/her list.
+ * Activity that shows the details of a book and enables the user to add it to his/her list
  */
 
 public class BookDetailActivity extends AppCompatActivity {
@@ -34,8 +34,8 @@ public class BookDetailActivity extends AppCompatActivity {
     String title;
     String author;
 
-    DatabaseReference dataRef;
     FirebaseUser user;
+    DatabaseReference database;
 
     String API_BASE_URL = "http://openlibrary.org";
     String json = ".json";
@@ -46,7 +46,7 @@ public class BookDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_book_detail);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        dataRef = FirebaseDatabase.getInstance().getReference();
+        database = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
 
         initializeViews();
         setMenu();
@@ -55,10 +55,9 @@ public class BookDetailActivity extends AppCompatActivity {
     }
 
     /**
-     * Initialize views in the layout.
+     * Initialize views in the layout
      **/
     private void initializeViews(){
-
         TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
         TextView tvAuthor = (TextView) findViewById(R.id.tvAuthor);
         ImageView ivBookCover = (ImageView) findViewById(R.id.ivBookCover);
@@ -78,24 +77,28 @@ public class BookDetailActivity extends AppCompatActivity {
         String requestDetails = API_BASE_URL + "/books/" + id + json;
         RetrieveDetails retrieveDetails = new RetrieveDetails(this);
         retrieveDetails.execute(requestDetails);
+
     }
 
     /**
-     * API request for publishers, number of pages and key to lookup the description.
-     * Conversion to views.
+     * API request for publishers, number of pages and key to lookup the description
+     * Conversion to views
      **/
     class RetrieveDetails extends AsyncTask<String, Void, String> {
+
         BookDetailActivity activity;
         Context context;
 
         public RetrieveDetails(BookDetailActivity activity) {
             this.activity = activity;
             this.context = this.activity.getApplicationContext();
+
         }
 
         // doInBackground
         protected String doInBackground(String... params) {
             return HttpRequestHelper.download(params);
+
         }
 
         // onPostExecute()
@@ -109,14 +112,17 @@ public class BookDetailActivity extends AppCompatActivity {
             if (result.length() == 0) {
                 Toast.makeText(context, "Error loading books", Toast.LENGTH_LONG).show();
             } else {
+
                 try {
                     JSONObject identifiers = new JSONObject(result);
+
                     if (identifiers.has("publishers")) {
                         final JSONArray publishers = identifiers.getJSONArray("publishers");
                         tvPublisher.setText(publishers.getString(0));
                     } else {
                         tvPublisher.setText(not_available);
                     }
+
                     if (identifiers.has("number_of_pages")) {
                         String pages = identifiers.getString("number_of_pages") + " pages";
                         tvPageCount.setText(pages);
@@ -124,6 +130,7 @@ public class BookDetailActivity extends AppCompatActivity {
                     else{
                         tvPageCount.setText(not_available);
                     }
+
                     if (identifiers.has("works")){
                         final JSONArray works = identifiers.getJSONArray("works");
                         JSONObject key = works.getJSONObject(0);
@@ -132,15 +139,18 @@ public class BookDetailActivity extends AppCompatActivity {
                         // get description using key
                         retrieveDescription(keyWorks);
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
         }
+
     }
 
     /**
-     * Use key to lookup description.
+     * Use key to lookup description
      **/
     public void retrieveDescription(String key){
         String requestDescription = API_BASE_URL + key + json;
@@ -158,11 +168,13 @@ public class BookDetailActivity extends AppCompatActivity {
         public RetrieveDescription(BookDetailActivity activity){
             this.activity = activity;
             this.context = this.activity.getApplicationContext();
+
         }
 
         // doInBackGround
         protected String doInBackground(String... params){
             return HttpRequestHelper.download(params);
+
         }
 
         // onPostExecute()
@@ -174,8 +186,10 @@ public class BookDetailActivity extends AppCompatActivity {
             }
             else {
                 try {
+
                     // load data from JSONObject to ArrayList
                     JSONObject data = new JSONObject(result);
+
                     if (data.has("description")){
                         final JSONObject description = data.getJSONObject("description");
                         String story = description.getString("value");
@@ -183,18 +197,20 @@ public class BookDetailActivity extends AppCompatActivity {
                     } else{
                         tvDescription.setText(not_available);
                     }
+
                 } catch(JSONException e) {
                     e.printStackTrace();
                 }
             }
+
         }
+
     }
 
     /**
-     * Initialize menu.
+     * Initialize menu
      **/
     private void setMenu(){
-
         TextView tvAdd = (TextView) findViewById(R.id.tvSearch);
         tvAdd.setText(R.string.add);
 
@@ -207,7 +223,8 @@ public class BookDetailActivity extends AppCompatActivity {
                 book.id = id;
                 book.title = title;
                 book.author = author;
-                dataRef.child("Users").child(user.getUid()).child("Books").child(book.id).setValue(book);
+
+                database.child(book.id).setValue(book);
 
                 // notify user
                 Toast.makeText(getApplicationContext(), "Book added to list!", Toast.LENGTH_SHORT).show();
@@ -234,6 +251,7 @@ public class BookDetailActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             }
         });
+
     }
 
 }

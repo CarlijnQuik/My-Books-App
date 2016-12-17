@@ -5,35 +5,38 @@ import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- * Controls the progress dialog in the log in activity.
- * Source: https://github.com/firebase/quickstart-android/tree/master/auth/app/src/main.
+ * Controls the progress dialog in the log in activity
+ * Source: https://github.com/firebase/quickstart-android/tree/master/auth/app/src/main
  **/
 
 public class LogInProgressDialog extends AppCompatActivity {
 
     @VisibleForTesting
-    public ProgressDialog mProgressDialog;
+    public ProgressDialog progressDialog;
 
     public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(getString(R.string.loading));
+            progressDialog.setIndeterminate(true);
         }
 
-        mProgressDialog.show();
+        progressDialog.show();
+
     }
 
     public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
         }
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         hideProgressDialog();
+
     }
 
 }

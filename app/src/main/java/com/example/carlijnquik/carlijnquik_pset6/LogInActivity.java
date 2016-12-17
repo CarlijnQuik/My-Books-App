@@ -31,20 +31,19 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 /**
- * Source: https://github.com/firebase/quickstart-android/tree/master/auth/app/src/main.
- * Controls the log in activity so multiple users can use the app.
- * Edited by Carlijn Quik in december 2016.
+ * Source: https://github.com/firebase/quickstart-android/tree/master/auth/app/src/main
+ * Controls the log in activity so multiple users can use the app
+ * Edited by Carlijn Quik in december 2016
  */
 
 public class LogInActivity extends LogInProgressDialog implements
         View.OnClickListener {
 
-    private static final String TAG = "EmailPassword";
-
-    private TextView mStatusTextView;
-    private EditText mEmailField;
-    private EditText mPasswordField;
+    private EditText etEmail;
+    private EditText etPassword;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -55,8 +54,12 @@ public class LogInActivity extends LogInProgressDialog implements
         setContentView(R.layout.activity_log_in);
 
         initalizeFirebase();
-        initializeViews();
-        setListeners();
+
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+
+        findViewById(R.id.bLogIn).setOnClickListener(this);
+        findViewById(R.id.bCreateAccount).setOnClickListener(this);
 
     }
 
@@ -66,18 +69,21 @@ public class LogInActivity extends LogInProgressDialog implements
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 if (user != null) {
-                    // User is logged in
+                    // user is logged in
                     forwardExistingUser();
                 }
             }
         };
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+
     }
 
     @Override
@@ -86,27 +92,19 @@ public class LogInActivity extends LogInProgressDialog implements
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-    }
 
-    public void initializeViews(){
-        mStatusTextView = (TextView) findViewById(R.id.status);
-        mEmailField = (EditText) findViewById(R.id.field_email);
-        mPasswordField = (EditText) findViewById(R.id.field_password);
-    }
-
-    public void setListeners(){
-        findViewById(R.id.bLogIn).setOnClickListener(this);
-        findViewById(R.id.bCreateAccount).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
+
         if (i == R.id.bCreateAccount) {
-            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            createAccount(etEmail.getText().toString(), etPassword.getText().toString());
         } else if (i == R.id.bLogIn) {
-            logIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+            logIn(etEmail.getText().toString(), etPassword.getText().toString());
         }
+
     }
 
     private void createAccount(String email, String password) {
@@ -116,16 +114,15 @@ public class LogInActivity extends LogInProgressDialog implements
 
         showProgressDialog();
 
-        // [START create_user_with_email]
+        // start create user with email
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        // If sign in fails, display a message, if sign in succeeds notify auth state listener
+                        // if sign in fails display a message, if sign in succeeds notify auth state listener
                         if (!task.isSuccessful()) {
-                            Toast.makeText(LogInActivity.this, R.string.auth_failed,
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LogInActivity.this, R.string.auth_failed, LENGTH_SHORT).show();
                         } else if (task.isSuccessful()) {
                             forwardNewUser();
                         }
@@ -133,6 +130,7 @@ public class LogInActivity extends LogInProgressDialog implements
                         hideProgressDialog();
                     }
                 });
+
     }
 
     private void logIn(String email, String password) {
@@ -142,16 +140,14 @@ public class LogInActivity extends LogInProgressDialog implements
 
         showProgressDialog();
 
-        // [START log_in_with_email]
+        // start log in with email
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         // If sign in fails, display a message, if sign in succeeds notify auth state listener
                         if (!task.isSuccessful()) {
-                            Toast.makeText(LogInActivity.this, R.string.auth_failed,
-                                    Toast.LENGTH_SHORT).show();
-                            mStatusTextView.setText(R.string.auth_failed);
+                            Toast.makeText(LogInActivity.this, R.string.auth_failed, LENGTH_SHORT).show();
                         } else if (task.isSuccessful()) {
                             forwardExistingUser();
                         }
@@ -159,40 +155,44 @@ public class LogInActivity extends LogInProgressDialog implements
                         hideProgressDialog();
                     }
                 });
+
     }
 
     private boolean validateForm() {
         boolean valid = true;
 
-        String email = mEmailField.getText().toString();
+        String email = etEmail.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Required.");
+            etEmail.setError("Required.");
             valid = false;
         } else {
-            mEmailField.setError(null);
+            etEmail.setError(null);
         }
 
-        String password = mPasswordField.getText().toString();
+        String password = etPassword.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            mPasswordField.setError("Required.");
+            etPassword.setError("Required.");
             valid = false;
         } else {
-            mPasswordField.setError(null);
+            etPassword.setError(null);
         }
 
         return valid;
+
     }
 
     public void forwardNewUser() {
         Intent intent = new Intent(this, NewUserActivity.class);
         startActivity(intent);
         finish();
+
     }
 
     public void forwardExistingUser() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
+
     }
 
 }

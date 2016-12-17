@@ -20,18 +20,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Activity that shows the list of searchresults a user requested.
+ * Activity that shows the list of search results a user requested
  */
 
 public class SearchResultsActivity extends AppCompatActivity {
 
-    ProgressBar progressbar;
-    TextView tvCount;
     String API_BASE_URL = "http://openlibrary.org/";
     String SEARCH_URL = "search.json?q=";
     String page = "&page=";
     String query;
     int count;
+
+    ProgressBar progressbar;
+    TextView tvCount;
     Context context;
     ArrayList<Book> books;
     String numberFound;
@@ -49,10 +50,11 @@ public class SearchResultsActivity extends AppCompatActivity {
         // get query and search
         query = getIntent().getExtras().getString("query", "");
         search(API_BASE_URL + SEARCH_URL + query + page + String.valueOf(count));
+
     }
 
     /**
-     * Keeps user's last search when they come back to SearchActivity.
+     * Keeps user's last search when they come back to SearchActivity
      **/
     @Override
     protected void onResume() {
@@ -71,16 +73,18 @@ public class SearchResultsActivity extends AppCompatActivity {
     public void search(String searchRequest){
         RetrieveBooks retrieveBooks = new RetrieveBooks();
         retrieveBooks.execute(searchRequest);
+
     }
 
     /**
-     * API request for list of books.
+     * API request for list of books
      **/
     public class RetrieveBooks extends AsyncTask<String, Void, String> {
 
         // doInBackground
         protected String doInBackground(String... params){
             return HttpRequestHelper.download(params);
+
         }
 
         //onPostExecute()
@@ -96,31 +100,37 @@ public class SearchResultsActivity extends AppCompatActivity {
                     // load data from JSONObject to ArrayList
                     JSONObject data = new JSONObject(result);
                     JSONArray docs = data.getJSONArray("docs");
+
                     for (int i = 0; i < docs.length(); i++) {
                         JSONObject bookJSON = docs.getJSONObject(i);
                         Book book = Book.fromJson(bookJSON);
+
                         if(book != null) {
                             books.add(book);
                         }
                     }
+
                     numberFound = data.getString("num_found");
+
                 } catch(JSONException e) {
                     e.printStackTrace();
                 }
+
                 // convert results to ListView
                 showList(books, numberFound);
             }
+
         }
 
     }
 
     public void showList(ArrayList<Book> books, String number) {
-
         // update layout views
         Button next = (Button) findViewById(R.id.next);
         Button previous = (Button) findViewById(R.id.previous);
-        progressbar.setVisibility(ProgressBar.INVISIBLE);
         ListView listFound = (ListView) findViewById(R.id.found_list);
+
+        progressbar.setVisibility(ProgressBar.INVISIBLE);
         String message = number + " books found!";
         tvCount.setText(message);
         if (books.size() == 100) {
@@ -161,12 +171,14 @@ public class SearchResultsActivity extends AppCompatActivity {
                 switchPage(count-=1);
             }
         });
+
     }
 
     // get results on other page
     public void switchPage(int count){
         progressbar.setVisibility(ProgressBar.VISIBLE);
         search(API_BASE_URL + SEARCH_URL + query + page + String.valueOf(count));
+
     }
 
     public void goToDetails(String id, String title, String author) {
@@ -177,6 +189,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         extras.putString("author", author);
         intent.putExtras(extras);
         startActivity(intent);
+
     }
 
 }

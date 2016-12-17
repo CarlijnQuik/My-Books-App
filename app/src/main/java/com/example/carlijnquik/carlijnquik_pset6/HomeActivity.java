@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 /**
- * The home screen from where a user can choose what to do.
+ * The home screen from where a user can choose what to do
  **/
 
 public class HomeActivity extends AppCompatActivity {
@@ -18,13 +18,13 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         setMenu();
+
     }
 
     /**
      * Initialize menu
      */
     public void setMenu(){
-
         ImageButton ibHome = (ImageButton) findViewById(R.id.ibHome);
         ibHome.setImageResource(R.drawable.this_act);
 
@@ -48,6 +48,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), SearchActivity.class));
             }
         });
+
     }
 
 }
