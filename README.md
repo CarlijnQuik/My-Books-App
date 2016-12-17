@@ -6,7 +6,7 @@ Pset6 Minor Programming University of Amsterdam
 
 Choices in technicalities;
 - Chose to edit the layouts myself instead of looking for themes etc.
-- Chose to create a custom menu instead of using for instance a different type of activity with a menu button. This is because in the previous psets those activities were not used. When creating the next App, I will consider using a different type of menu. This might also be better to avoid having to use fragments.
+- Chose to create a custom menu instead of using for instance a different type of activity with a menu button. This is because in the previous psets those activities were not used. When creating the next App, I will consider using a different type of menu. This might also be better to avoid having to use fragments without the code becoming less efficient. I am aware of the fact that the setMenu() function could be general if I would do that. I was told fragmants are too hard to learn for now so I stuck with this function.
 
 For signing in, the Firebase QuickStart example is used with a bit of editing as well as the documentation on this topic.
 - https://github.com/firebase/quickstart-android
