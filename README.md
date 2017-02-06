@@ -3,6 +3,7 @@
 - Name: Carlijn Quik 
 - Student Number: 11334231 
 - Description: In this app you can search for books and create a list of books to read.
+- Database and authentication with FireBase.
 
 <img src="https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-31-47.png" width="200">
 <img src="https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-33-01.png" width="200">
