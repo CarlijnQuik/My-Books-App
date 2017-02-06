@@ -1,7 +1,6 @@
 ### Problem set 6 of the Minor Programming at the University of Amsterdam
 
-- Name: Carlijn Quik 
-- Student Number: 11334231 
+- Copyright © 2017 by Carlijn Quik.
 - Description: In this app you can search for books and create a list of books to read.
 - Database and authentication: FireBase.
 
