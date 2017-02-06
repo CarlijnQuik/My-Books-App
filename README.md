@@ -1,8 +1,12 @@
-Pset6 Minor Programming University of Amsterdam
+Problem set 6 Minor Programming University of Amsterdam
 
 - Name: Carlijn Quik 
 - Student Number: 11334231 
-- Description: In this app you can look up books and create a list of books to read.
+- Description: In this app you can search for books and create a list of books to read.
+
+<img src="https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-31-47.png" width="200">
+<img src="https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-33-01.png" width="200">
+<img src="https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-33-21.png" width="200">
 
 Choices in technicalities;
 - Chose to edit the layouts myself instead of looking for themes etc.
@@ -23,8 +27,5 @@ I do not owe the rights of the images and they can all be found with Google Imag
 - http://www.clipartpanda.com/clipart_images/books-for-clip-art-9-743319
 - http://www.solidbackgrounds.com/1920x1080-white-solid-color-background.html
 
-These are screenshots of the log in, search results and books activity;
 
-- https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-31-47.png
-- https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-33-01.png
-- https://raw.githubusercontent.com/carlijnq/carlijnquik-pset6/b4e2af6e187ccecc09b7fb588c69908c505ff9f3/doc/Screenshot_2016-12-17-21-33-21.png
+
