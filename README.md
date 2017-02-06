@@ -1,4 +1,4 @@
-### Problem set 6 of the Minor Programming University of Amsterdam
+### Problem set 6 of the Minor Programming at the University of Amsterdam
 
 - Name: Carlijn Quik 
 - Student Number: 11334231 
