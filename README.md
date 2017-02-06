@@ -1,4 +1,4 @@
-### Problem set 6 of the Minor Programming at the University of Amsterdam
+### Problem set 6 of the App Studio course of the Minor Programming at the University of Amsterdam
 
 - Copyright © 2017 by Carlijn Quik.
 - Description: In this app you can search for books and create a list of books to read.
